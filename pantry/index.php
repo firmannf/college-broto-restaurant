@@ -1,3 +1,15 @@
+<?php
+  require_once "../proses/connection.php";
+  session_start();
+  
+  if(isset($_SESSION['pekerjaan'])){
+    if($_SESSION['pekerjaan'] != 'Pantry') {
+      echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
+    }
+	} else {
+    echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
+  }
+?>
 <!DOCTYPE html>
 <html>
 
@@ -17,10 +29,10 @@
         <div class="navbar-custom-menu">
           <ul class="top-nav">
             <li class="dropdown">
-              <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Pantry</b></a>
+              <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama'];?></b></a>
               <ul class="dropdown-menu settings-menu">
                 <li><a href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-                <li><a href="#"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+                <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
               </ul>
             </li>
           </ul>
@@ -81,6 +93,9 @@
   <script src="../assets/js/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/pace.min.js"></script>
   <script src="../assets/js/main.js"></script>
+  <?php
+    echo mysqli_close($connection);
+  ?>
 </body>
 
 </html>

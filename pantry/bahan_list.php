@@ -3,7 +3,7 @@
   session_start();
   
   if(isset($_SESSION['pekerjaan'])){
-    if($_SESSION['pekerjaan'] != 'Admin') {
+    if($_SESSION['pekerjaan'] != 'Pantry') {
       echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
     }
 	} else {
@@ -43,10 +43,10 @@
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Pegawai</span><i class="fa fa-angle-right"></i></a>
+            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
-                <li><a href="pegawai_list.php"><i class="fa fa-th-large"></i> Daftar Pegawai</a></li>
-                <li><a href="pegawai_tambah.php"><i class="fa fa-plus"></i> Tambah Pegawai</a></li>
+                <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan</a></li>
+                <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan</a></li>
               </ul>
             </li>
           </ul>
@@ -55,31 +55,24 @@
       <div class="content-wrapper">
         <div class="page-title">
           <div>
-            <h1><i class="fa fa-user"></i> Atur Pegawai</h1>
-            <p>Olah data pegawai yang terdaftar di resto broto</p>
+            <h1><i class="fa fa-glass"></i> Atur Bahan</h1>
+            <p>Olah data bahan di resto broto</p>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="card" style="padding: 16px 48px;">
               <div style="margin-top: 16px;">
-                <a href="#" onClick="searchKeywords()" class="btn btn-default pull-right" style="margin-left: 12px;"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Cari</a>
-                <?php
-                if(isset($_GET['q'])) {
-                ?>
-                <a href="pegawai_list.php" class="btn btn-primary pull-right"><i class="fa fa-arrow-left"></i></a>
-                <?php
-                }
-                ?>
-                <h3 class="card-title">Daftar Pegawai</h3>
+                <a href="#" class="btn btn-default pull-right"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Cari</a>
+                <h3 class="card-title">Daftar Bahan</h3>
               </div>
               <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+                <table class="table table-hover table-bordered" style="border-collapse:collapse;">
                   <thead>
                     <tr>
-                      <th>NIK</th>
-                      <th>Nama</th>
-                      <th>Pekerjaan</th>
+                      <th>Nama Bahan</th>
+                      <th>Qty</th>
+                      <th>Harga per Satuan</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -89,21 +82,25 @@
                       $strQuery = "SELECT nik, nama, pekerjaan FROM pegawai WHERE pekerjaan != 'Admin'
                                     AND nik LIKE '%$_GET[q]%' OR nama LIKE '%$_GET[q]%' OR pekerjaan LIKE '%$_GET[q]%' ORDER BY nik ASC";
                     }else {
-                      $strQuery = "SELECT nik, nama, pekerjaan FROM pegawai WHERE pekerjaan != 'Admin' ORDER BY nik ASC";
+                      $strQuery = "SELECT bahanbaku_id, nama, total_qty, satuan, harga_per_satuan FROM bahanbaku ORDER BY bahanbaku_id ASC";
                     }
                     $query = mysqli_query($connection, $strQuery);
                     $i = 0;
                     while($result = mysqli_fetch_assoc($query)){
-                      echo "<tr id=$result[nik]>";
-                      echo "<td>$result[nik]</td>";
+                      echo "<tr id=$result[bahanbaku_id] data-toggle=collapse data-target=#detail$i class=\"accordion-toggle\" style=\"cursor:pointer;\">";
                       echo "<td>$result[nama]</td>";
-                      echo "<td>$result[pekerjaan]</td>";
-                      echo "<td><a href='pegawai_edit.php?nik=$result[nik]'><i class=\"fa fa-pencil\"></i></a>";
+                      echo "<td>$result[total_qty] $result[satuan]</td>";
+                      echo "<td style=\"text-align: right;\">Rp. $result[harga_per_satuan]</td>";
+                      echo "<td><a href='bahan_edit.php?nik=$result[bahanbaku_id]'><i class=\"fa fa-pencil\"></i></a>";
                       echo "&nbsp;&nbsp;&nbsp;";
-                      echo "<a href=# class=btn-link onClick=deleteConfirm($result[nik])>
+                      echo "<a href=# class=btn-link onClick=deleteConfirm($result[bahanbaku_id])>
                                 <i class=\"fa fa-trash\"></i>
                             </a>";
                       echo "</tr>";
+                      echo "<tr>
+                          <td colspan=5 style=\"padding: 0 !important;\"><div id=detail$i class=\"accordion-body collapse\">$i</div></td>
+                      </tr>";
+                      $i++;
                     }
                   ?>
                   </tbody>
@@ -133,10 +130,10 @@
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/plugins/sweetalert.min.js"></script>
     <script type="text/javascript">
-      var nik = "";
+      var id = "";
 
-      function deleteConfirm(nik) {
-        this.nik = nik;
+      function deleteConfirm(id) {
+        this.id = id;
         var self = this;
         $(document).ready(function () {
           swal({
@@ -152,9 +149,9 @@
             function (isConfirm) {
               if (isConfirm) {
                 $.ajax({
-                  url: 'proses/pegawai_delete_proses.php',
+                  url: 'proses/bahan_delete_proses.php',
                   data: {
-                    'nik': self.nik
+                    'id': self.id
                   },
                   dataType: "html",
                   type: 'POST',
@@ -163,7 +160,7 @@
                     if (data == 'error') {
                       swal("400 Bad Request", "Data Tidak Dapat dihapus", "error");
                     } else {
-                      document.getElementById(self.nik).remove();
+                      document.getElementById(self.id).remove();
                       swal("Berhasil", "Data Terhapus", "success");
                     }
                   },
@@ -178,22 +175,22 @@
 
       function searchKeywords() {
         swal({
-          title: "Cari Pegawai",
-          text: "Masukkan keyword yang ingin anda cari",
-          type: "input",
-          showCancelButton: true,
-          closeOnConfirm: false,
-          inputPlaceholder: "NIK atau Nama atau Pekerjaan"
-        },
-        function(inputValue){
-          if (inputValue === false) return false;
-          if (inputValue === "") {
-            swal.showInputError("Keywords Masih Kosong");
-            return false
-          }
-          
-          document.location.href='pegawai_list.php?q=' + inputValue;
-        });
+            title: "Cari Bahan Baku",
+            text: "Masukkan keyword yang ingin anda cari",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputPlaceholder: "Nama Bahan Baku atau Harga atau Tanggal Kadaluarsa"
+          },
+          function (inputValue) {
+            if (inputValue === false) return false;
+            if (inputValue === "") {
+              swal.showInputError("Keywords Masih Kosong");
+              return false
+            }
+
+            document.location.href = 'bahan_list.php?q=' + inputValue;
+          });
       }
     </script>
     <!--Handling Error and Success Message-->

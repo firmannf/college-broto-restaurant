@@ -197,6 +197,11 @@
                         <td>:</td>
                         <td>67500</td>
                       </tr>
+                      <tr>
+                        <td><b>BAYAR</b></td>
+                        <td>:</td>
+                        <td><input type="number"/></td>
+                      </tr>
                     </table>
                   </div>
                 </div>

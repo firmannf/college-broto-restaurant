@@ -1,5 +1,4 @@
 <?php
-  require_once "../proses/connection.php";
   session_start();
   
   if(isset($_SESSION['pekerjaan'])){
@@ -82,7 +81,6 @@
                       <option value="Koki">Koki</option>
                       <option value="Pantry">Pantry</option>
                       <option value="Pelayan">Pelayan</option>
-                      <option value="Admin">Admin</option>
                     </select>
                   </div>
                   <div class="form-group">

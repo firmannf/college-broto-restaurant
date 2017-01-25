@@ -96,7 +96,6 @@
                       <option value="Koki" <?php if($pekerjaan == "Koki") echo "selected"; ?>>Koki</option>
                       <option value="Pantry" <?php if($pekerjaan == "Pantry") echo "selected"; ?>>Pantry</option>
                       <option value="Pelayan" <?php if($pekerjaan == "Pelayan") echo "selected"; ?>>Pelayan</option>
-                      <option value="Admin" <?php if($pekerjaan == "Admin") echo "selected"; ?>>Admin</option>
                     </select>
                   </div>
                   <div class="form-group">
