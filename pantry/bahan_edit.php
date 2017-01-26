@@ -1,13 +1,28 @@
 <?php
+  require_once "../proses/connection.php";
   session_start();
   
   if(isset($_SESSION['pekerjaan'])){
-    if($_SESSION['pekerjaan'] != 'Admin') {
+    if($_SESSION['pekerjaan'] != 'Pantry') {
       echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
     }
 	} else {
     echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
   }
+
+  if(isset($_GET['id'])) {
+        $id_bahanbaku = $_GET['id'];
+        $nama_bahanbaku = "";
+        $satuan = "";
+        $strQuery = "SELECT id_bahanbaku, nik, nama_bahanbaku, satuan FROM bahanbaku WHERE id_bahanbaku = '$id_bahanbaku'";
+        $query = mysqli_query($connection, $strQuery);
+        if($query){
+            $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+            $id_bahanbaku = $result['id_bahanbaku'];
+            $nama_bahanbaku = $result['nama_bahanbaku'];
+            $satuan = $result['satuan'];
+        }
+    }
 ?>
   <!DOCTYPE html>
   <html>
@@ -42,53 +57,41 @@
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Pegawai</span><i class="fa fa-angle-right"></i></a>
+            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
-                <li><a href="pegawai_list.php"><i class="fa fa-th-large"></i> Daftar Pegawai</a></li>
-                <li><a href="pegawai_tambah.php"><i class="fa fa-plus"></i> Tambah Pegawai</a></li>
+                <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan</a></li>
+                <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan</a></li>
               </ul>
             </li>
-            <li><a href="index.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
           </ul>
         </section>
       </aside>
       <div class="content-wrapper">
         <div class="page-title">
           <div>
-            <h1><i class="fa fa-user"></i> Atur Pegawai</h1>
-            <p>Olah data pegawai yang terdaftar di resto broto</p>
+            <h1><i class="fa fa-glass"></i> Atur Bahan Baku</h1>
+            <p>Olah data bahan baku di resto broto</p>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3"></div>
           <div class="col-md-6">
             <div class="card">
-              <h3 class="card-title">Tambah Data Pegawai</h3>
+              <h3 class="card-title">Edit Data Bahan Baku</h3>
               <div class="card-body">
-                <form action="proses/pegawai_tambah_proses.php" method="POST">
+                <form action="proses/bahan_edit_proses.php" method="POST">
                   <div class="form-group">
-                    <label class="control-label">NIK</label>
-                    <input type="text" name="nik" placeholder="Masukkan NIK pegawai" class="form-control" required>
+                    <label class="control-label">Nama Bahan Baku</label>
+                    <input type="text" name="nama_bahanbaku" placeholder="Masukkan nama bahan baku" class="form-control" value="<?php echo $nama_bahanbaku;?>"
+                      required>
                   </div>
                   <div class="form-group">
-                    <label class="control-label">Nama Pegawai</label>
-                    <input type="text" name="nama_pegawai" placeholder="Masukkan nama pegawai" class="form-control" required>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label">Pekerjaan</label>
-                    <select class="form-control" name="pekerjaan">
-                      <option value="Customer Service">Customer Service</option>
-                      <option value="Kasir">Kasir</option>
-                      <option value="Koki">Koki</option>
-                      <option value="Pantry">Pantry</option>
-                      <option value="Pelayan">Pelayan</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label">Password</label>
-                    <input type="password" name="password" placeholder="Masukkan password pegawai" class="form-control" required>
+                    <label class="control-label">Satuan</label>
+                    <input type="text" name="satuan" placeholder="Masukkan satuan (cth: gram)" class="form-control" value="<?php echo $satuan;?>"
+                      required>
                   </div>
                   <div class="card-footer" style="text-align: center;">
+                    <input type="hidden" name="id" value="<?php echo $id_bahanbaku;?>">
                     <button type="submit" class="btn btn-primary icon-btn input-lg"><i class="fa fa-fw fa-lg fa-check-circle"></i>Simpan</button>
                   </div>
                 </form>
@@ -110,7 +113,7 @@
     if(isset($_GET['e'])) {
       if($_GET['e'] === 'bad-request') {
           echo "<script type=text/javascript>
-                swal('400 Bad Request', 'Terjadi Kesalahan Saat Memproses Data Login', 'error');
+                swal('400 Bad Request', 'Terjadi Kesalahan Saat Memproses Data Bahan Baku', 'error');
           </script>";
       }
     }

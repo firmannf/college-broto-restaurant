@@ -14,12 +14,12 @@
         $nik = $_GET['nik'];
         $nama = "";
         $pekerjaan = "";
-        $strQuery = "SELECT nik, nama, pekerjaan FROM pegawai WHERE nik = '$nik'";
+        $strQuery = "SELECT nik, nama_pegawai, pekerjaan FROM pegawai WHERE nik = '$nik'";
         $query = mysqli_query($connection, $strQuery);
         if($query){
             $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
             $nik = $result['nik'];
-            $nama = $result['nama'];
+            $nama_pegawai = $result['nama_pegawai'];
             $pekerjaan = $result['pekerjaan'];
         }
     }
@@ -43,7 +43,7 @@
           <div class="navbar-custom-menu">
             <ul class="top-nav">
               <li class="dropdown">
-                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama'];?></b></a>
+                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama_pegawai'];?></b></a>
                 <ul class="dropdown-menu settings-menu">
                   <li><a href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
                   <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
@@ -63,6 +63,7 @@
                 <li><a href="pegawai_tambah.php"><i class="fa fa-plus"></i> Tambah Pegawai</a></li>
               </ul>
             </li>
+            <li><a href="index.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
           </ul>
         </section>
       </aside>
@@ -85,8 +86,8 @@
                     <input type="text" name="nik" placeholder="Masukkan NIK pegawai" class="form-control" value="<?php echo $nik;?>" readonly>
                   </div>
                   <div class="form-group">
-                    <label class="control-label">Nama</label>
-                    <input type="text" name="nama" placeholder="Masukkan nama pegawai" class="form-control" value="<?php echo $nama;?>" required>
+                    <label class="control-label">Nama Pegawai</label>
+                    <input type="text" name="nama_pegawai" placeholder="Masukkan nama pegawai" class="form-control" value="<?php echo $nama_pegawai;?>" required>
                   </div>
                   <div class="form-group">
                     <label class="control-label">Pekerjaan</label>

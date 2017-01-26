@@ -2,15 +2,15 @@
 	require "../../proses/connection.php";
 
 	$nik = $_POST['nik'];
-	$nama = $_POST['nama'];
-	$pekerjaan = $_POST['pekerjaan'];
+	$nama_pegawai = $_POST['nama_pegawai'];
 	$password = $_POST['password'];
+	$pekerjaan = $_POST['pekerjaan'];
 
 	if(!empty($password)) {
 		$encryptedPassword = md5($password);
-		$strQuery = "UPDATE pegawai set nama = '$nama', pekerjaan = '$pekerjaan', password = '$encryptedPassword' WHERE nik = '$nik'";
+		$strQuery = "UPDATE pegawai set nama_pegawai = '$nama_pegawai', password = '$encryptedPassword', pekerjaan = '$pekerjaan' WHERE nik = '$nik'";
 	} else {
-		$strQuery = "UPDATE pegawai set nama = '$nama', pekerjaan = '$pekerjaan' WHERE nik = '$nik'";
+		$strQuery = "UPDATE pegawai set nama_pegawai = '$nama_pegawai', pekerjaan = '$pekerjaan' WHERE nik = '$nik'";
 	}
 
 	$query = mysqli_query($connection, $strQuery);

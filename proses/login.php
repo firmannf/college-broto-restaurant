@@ -14,7 +14,7 @@
 		}else{
 			$result = mysqli_fetch_array($query, MYSQLI_ASSOC);
             $_SESSION['nik'] = $result['nik'];
-			$_SESSION['nama'] = $result['nama'];
+			$_SESSION['nama_pegawai'] = $result['nama_pegawai'];
 			$_SESSION['pekerjaan'] = $result['pekerjaan'];
 			if($result['pekerjaan'] === "Admin") {
 				echo "<script type=text/javascript>document.location.href='../admin/index.php'</script>";

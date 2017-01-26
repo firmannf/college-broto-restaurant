@@ -29,7 +29,7 @@
           <div class="navbar-custom-menu">
             <ul class="top-nav">
               <li class="dropdown">
-                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama'];?></b></a>
+                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama_pegawai'];?></b></a>
                 <ul class="dropdown-menu settings-menu">
                   <li><a href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
                   <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
@@ -43,10 +43,10 @@
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan</span><i class="fa fa-angle-right"></i></a>
+            <li class="treeview active"><a href="#"><i class="fa fa-dropbox"></i><span>Atur Bahan Baku</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
-                <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan</a></li>
-                <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan</a></li>
+                <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan Baku</a></li>
+                <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan Baku</a></li>
               </ul>
             </li>
           </ul>
@@ -55,51 +55,65 @@
       <div class="content-wrapper">
         <div class="page-title">
           <div>
-            <h1><i class="fa fa-glass"></i> Atur Bahan</h1>
-            <p>Olah data bahan di resto broto</p>
+            <h1><i class="fa fa-glass"></i> Atur Bahan Baku</h1>
+            <p>Olah data bahan baku di resto broto</p>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <div class="card" style="padding: 16px 48px;">
               <div style="margin-top: 16px;">
-                <a href="#" class="btn btn-default pull-right"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Cari</a>
-                <h3 class="card-title">Daftar Bahan</h3>
+                <a href="#" onClick="searchKeywords()" class="btn btn-default pull-right" style="margin-left: 12px;"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Cari</a>
+                <?php
+                if(isset($_GET['q'])) {
+                ?>
+                <a href="bahan_list.php" class="btn btn-primary pull-right"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Kembali</a>
+                <?php
+                }
+                ?>
+                <h3 class="card-title">Daftar Bahan Baku</h3>
               </div>
               <div class="table-responsive">
                 <table class="table table-hover table-bordered" style="border-collapse:collapse;">
                   <thead>
                     <tr>
-                      <th>Nama Bahan</th>
-                      <th>Qty</th>
-                      <th>Harga per Satuan</th>
+                      <th>ID</th>
+                      <th>Nama Bahan Baku</th>
+                      <th>Stok</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
                     if(isset($_GET['q'])){
-                      $strQuery = "SELECT nik, nama, pekerjaan FROM pegawai WHERE pekerjaan != 'Admin'
-                                    AND nik LIKE '%$_GET[q]%' OR nama LIKE '%$_GET[q]%' OR pekerjaan LIKE '%$_GET[q]%' ORDER BY nik ASC";
+                      $strQuery = "SELECT b.id_bahanbaku, b.nik, b.nama_bahanbaku, SUM(bd.qty) as stok, b.satuan 
+                                    FROM bahanbaku b LEFT JOIN bahanbaku_detail bd
+                                    ON b.id_bahanbaku = bd.id_bahanbaku 
+                                    WHERE b.nik = '$_SESSION[nik]' AND (bd.tgl_kadaluarsa >= NOW() OR bd.tgl_kadaluarsa IS NULL) AND nama_bahanbaku LIKE '%$_GET[q]%'
+                                    GROUP BY b.id_bahanbaku ORDER BY id_bahanbaku ASC";
                     }else {
-                      $strQuery = "SELECT bahanbaku_id, nama, total_qty, satuan, harga_per_satuan FROM bahanbaku ORDER BY bahanbaku_id ASC";
+                      $strQuery = "SELECT b.id_bahanbaku, b.nik, b.nama_bahanbaku, SUM(bd.qty) as stok, b.satuan 
+                                    FROM bahanbaku b LEFT JOIN bahanbaku_detail bd
+                                    ON b.id_bahanbaku = bd.id_bahanbaku 
+                                    WHERE b.nik = '$_SESSION[nik]' AND (bd.tgl_kadaluarsa >= NOW() OR bd.tgl_kadaluarsa IS NULL) 
+                                    GROUP BY b.id_bahanbaku ORDER BY id_bahanbaku ASC";
                     }
                     $query = mysqli_query($connection, $strQuery);
                     $i = 0;
                     while($result = mysqli_fetch_assoc($query)){
-                      echo "<tr id=$result[bahanbaku_id] data-toggle=collapse data-target=#detail$i class=\"accordion-toggle\" style=\"cursor:pointer;\">";
-                      echo "<td>$result[nama]</td>";
-                      echo "<td>$result[total_qty] $result[satuan]</td>";
-                      echo "<td style=\"text-align: right;\">Rp. $result[harga_per_satuan]</td>";
-                      echo "<td><a href='bahan_edit.php?nik=$result[bahanbaku_id]'><i class=\"fa fa-pencil\"></i></a>";
+                      echo "<tr id=$result[id_bahanbaku]>";
+                      echo "<td>$result[id_bahanbaku]</td>";
+                      echo "<td>$result[nama_bahanbaku]</td>";
+                      $stok = $result['stok'] == NULL ? 0 : $result['stok'];
+                      echo "<td>$stok $result[satuan]</td>";
+                      echo "<td><a href='bahan_detail_list.php?id=$result[id_bahanbaku]'><i class=\"fa fa-eye\"></i></a>";
                       echo "&nbsp;&nbsp;&nbsp;";
-                      echo "<a href=# class=btn-link onClick=deleteConfirm($result[bahanbaku_id])>
+                      echo "<a href='bahan_edit.php?id=$result[id_bahanbaku]'><i class=\"fa fa-pencil\"></i></a>";
+                      echo "&nbsp;&nbsp;&nbsp;";
+                      echo "<a href=# class=btn-link onClick=deleteConfirm($result[id_bahanbaku])>
                                 <i class=\"fa fa-trash\"></i>
                             </a>";
                       echo "</tr>";
-                      echo "<tr>
-                          <td colspan=5 style=\"padding: 0 !important;\"><div id=detail$i class=\"accordion-body collapse\">$i</div></td>
-                      </tr>";
                       $i++;
                     }
                   ?>
@@ -176,16 +190,16 @@
       function searchKeywords() {
         swal({
             title: "Cari Bahan Baku",
-            text: "Masukkan keyword yang ingin anda cari",
+            text: "Masukkan nama bahan baku yang ingin anda cari",
             type: "input",
             showCancelButton: true,
             closeOnConfirm: false,
-            inputPlaceholder: "Nama Bahan Baku atau Harga atau Tanggal Kadaluarsa"
+            inputPlaceholder: "Nama Bahan Baku"
           },
           function (inputValue) {
             if (inputValue === false) return false;
             if (inputValue === "") {
-              swal.showInputError("Keywords Masih Kosong");
+              swal.showInputError("Nama Bahan Baku Masih Kosong");
               return false
             }
 

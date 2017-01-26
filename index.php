@@ -21,11 +21,11 @@
       <form action="proses/login.php" method="POST" class="login-form">
         <div class="form-group">
           <label class="control-label">NIK</label>
-          <input type="text" name="nik" placeholder="NIK" class="form-control" autofocus>
+          <input type="text" name="nik" placeholder="NIK" class="form-control" autofocus required>
         </div>
         <div class="form-group" style="margin-bottom: 24px;">
           <label class="control-label">PASSWORD</label>
-          <input type="password" name="password" placeholder="Password" class="form-control">
+          <input type="password" name="password" placeholder="Password" class="form-control" required>
         </div>
         <div class="form-group btn-container">
           <button class="btn btn-primary btn-block input-lg">SIGN IN</button>

@@ -29,7 +29,7 @@
         <div class="navbar-custom-menu">
           <ul class="top-nav">
             <li class="dropdown">
-              <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama'];?></b></a>
+              <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama_pegawai'];?></b></a>
               <ul class="dropdown-menu settings-menu">
                 <li><a href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
                 <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
@@ -49,6 +49,7 @@
               <li><a href="pegawai_tambah.php"><i class="fa fa-plus"></i> Tambah Pegawai</a></li>
             </ul>
           </li>
+          <li><a href="index.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
         </ul>
       </section>
     </aside>
