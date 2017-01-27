@@ -43,10 +43,11 @@
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li class="treeview active"><a href="#"><i class="fa fa-dropbox"></i><span>Atur Bahan Baku</span><i class="fa fa-angle-right"></i></a>
+            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan Baku</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan Baku</a></li>
                 <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan Baku</a></li>
+                <li><a href="bahan_tambah_restock.php"><i class="fa fa-refresh"></i> Restock Bahan Baku</a></li>
               </ul>
             </li>
           </ul>
@@ -80,23 +81,23 @@
                       <th>ID</th>
                       <th>Nama Bahan Baku</th>
                       <th>Stok</th>
+                      <th>Tanggal Masuk</th>
+                      <th>Tanggal Kadaluarsa</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
                     if(isset($_GET['q'])){
-                      $strQuery = "SELECT b.id_bahanbaku, b.nik, b.nama_bahanbaku, SUM(bd.qty) as stok, b.satuan 
-                                    FROM bahanbaku b LEFT JOIN bahanbaku_detail bd
-                                    ON b.id_bahanbaku = bd.id_bahanbaku 
-                                    WHERE b.nik = '$_SESSION[nik]' AND (bd.tgl_kadaluarsa >= NOW() OR bd.tgl_kadaluarsa IS NULL) AND nama_bahanbaku LIKE '%$_GET[q]%'
-                                    GROUP BY b.id_bahanbaku ORDER BY id_bahanbaku ASC";
+                      $strQuery = "SELECT id_bahanbaku, nik, nama_bahanbaku, stok, satuan, tgl_masuk, tgl_kadaluarsa 
+                                    FROM bahanbaku
+                                    WHERE nik = '$_SESSION[nik]' AND tgl_kadaluarsa >= NOW() AND nama_bahanbaku LIKE '%$_GET[q]%'
+                                    ORDER BY id_bahanbaku DESC";
                     }else {
-                      $strQuery = "SELECT b.id_bahanbaku, b.nik, b.nama_bahanbaku, SUM(bd.qty) as stok, b.satuan 
-                                    FROM bahanbaku b LEFT JOIN bahanbaku_detail bd
-                                    ON b.id_bahanbaku = bd.id_bahanbaku 
-                                    WHERE b.nik = '$_SESSION[nik]' AND (bd.tgl_kadaluarsa >= NOW() OR bd.tgl_kadaluarsa IS NULL) 
-                                    GROUP BY b.id_bahanbaku ORDER BY id_bahanbaku ASC";
+                      $strQuery = "SELECT id_bahanbaku, nik, nama_bahanbaku, stok, satuan, tgl_masuk, tgl_kadaluarsa 
+                                    FROM bahanbaku
+                                    WHERE nik = '$_SESSION[nik]' AND tgl_kadaluarsa >= NOW()
+                                    ORDER BY id_bahanbaku DESC";
                     }
                     $query = mysqli_query($connection, $strQuery);
                     $i = 0;
@@ -104,11 +105,10 @@
                       echo "<tr id=$result[id_bahanbaku]>";
                       echo "<td>$result[id_bahanbaku]</td>";
                       echo "<td>$result[nama_bahanbaku]</td>";
-                      $stok = $result['stok'] == NULL ? 0 : $result['stok'];
-                      echo "<td>$stok $result[satuan]</td>";
-                      echo "<td><a href='bahan_detail_list.php?id=$result[id_bahanbaku]'><i class=\"fa fa-eye\"></i></a>";
-                      echo "&nbsp;&nbsp;&nbsp;";
-                      echo "<a href='bahan_edit.php?id=$result[id_bahanbaku]'><i class=\"fa fa-pencil\"></i></a>";
+                      echo "<td>$result[stok] $result[satuan]</td>";
+                      echo "<td>$result[tgl_masuk]</td>";
+                      echo "<td>$result[tgl_kadaluarsa]</td>";
+                      echo "<td><a href='bahan_edit.php?id=$result[id_bahanbaku]'><i class=\"fa fa-pencil\"></i></a>";
                       echo "&nbsp;&nbsp;&nbsp;";
                       echo "<a href=# class=btn-link onClick=deleteConfirm($result[id_bahanbaku])>
                                 <i class=\"fa fa-trash\"></i>

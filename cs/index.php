@@ -53,7 +53,7 @@
             <p>Selamat datang di halaman customer service resto broto</p>
           </div>
           <div class="col-md-2">
-            <a href="#" class="btn btn-success pull-right"><i class="fa fa-print"></i>&nbsp;&nbsp;&nbsp;Cetak</a>
+            <a href="#" class="btn btn-default pull-right"><i class="fa fa-print"></i>&nbsp;&nbsp;&nbsp;Cetak</a>
           </div>
         </div>
         <div class="row">

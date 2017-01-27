@@ -13,14 +13,18 @@
   if(isset($_GET['id'])) {
         $id_bahanbaku = $_GET['id'];
         $nama_bahanbaku = "";
+        $stok = 0;
         $satuan = "";
-        $strQuery = "SELECT id_bahanbaku, nik, nama_bahanbaku, satuan FROM bahanbaku WHERE id_bahanbaku = '$id_bahanbaku'";
+        $tgl_kadaluarsa = "";
+        $strQuery = "SELECT id_bahanbaku, nik, nama_bahanbaku, stok, satuan, tgl_kadaluarsa FROM bahanbaku WHERE id_bahanbaku = '$id_bahanbaku'";
         $query = mysqli_query($connection, $strQuery);
         if($query){
             $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
             $id_bahanbaku = $result['id_bahanbaku'];
             $nama_bahanbaku = $result['nama_bahanbaku'];
+            $stok = $result['stok'];
             $satuan = $result['satuan'];
+            $tgl_kadaluarsa = $result['tgl_kadaluarsa'];
         }
     }
 ?>
@@ -57,10 +61,11 @@
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan</span><i class="fa fa-angle-right"></i></a>
+            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan Baku</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
-                <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan</a></li>
-                <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan</a></li>
+                <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan Baku</a></li>
+                <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan Baku</a></li>
+                <li><a href="bahan_tambah_restock.php"><i class="fa fa-refresh"></i> Restock Bahan Baku</a></li>
               </ul>
             </li>
           </ul>
@@ -85,9 +90,24 @@
                     <input type="text" name="nama_bahanbaku" placeholder="Masukkan nama bahan baku" class="form-control" value="<?php echo $nama_bahanbaku;?>"
                       required>
                   </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="control-label">Stok</label>
+                        <input type="number" name="stok" placeholder="Masukkan stok" class="form-control" value="<?php echo $stok;?>" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="control-label">Satuan</label>
+                        <input type="text" name="satuan" placeholder="Masukkan satuan (cth: gram)" class="form-control" value="<?php echo $satuan;?>"
+                          required>
+                      </div>
+                    </div>
+                  </div>
                   <div class="form-group">
-                    <label class="control-label">Satuan</label>
-                    <input type="text" name="satuan" placeholder="Masukkan satuan (cth: gram)" class="form-control" value="<?php echo $satuan;?>"
+                    <label class="control-label">Tanggal Kadaluarsa</label>
+                    <input name="tgl_kadaluarsa" placeholder="Masukkan tanggal kadaluarsa" id="tgl_kadaluarsa" class="form-control" value="<?php echo $tgl_kadaluarsa;?>"
                       required>
                   </div>
                   <div class="card-footer" style="text-align: center;">
@@ -108,6 +128,14 @@
     <script src="../assets/js/plugins/pace.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/plugins/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../assets/js/plugins/bootstrap-datepicker.min.js"></script>
+    <script>
+      $('#tgl_kadaluarsa').datepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayHighlight: true
+      });
+    </script>
     <!--Handling Error and Success Message-->
     <?php
     if(isset($_GET['e'])) {
@@ -117,6 +145,7 @@
           </script>";
       }
     }
+    mysqli_close($connection);
     ?>
   </body>
 

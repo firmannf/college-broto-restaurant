@@ -1,3 +1,15 @@
+<?php
+  require_once "../proses/connection.php";
+  session_start();
+  
+  if(isset($_SESSION['pekerjaan'])){
+    if($_SESSION['pekerjaan'] != 'Koki') {
+      echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
+    }
+	} else {
+    echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
+  }
+?>
 <!DOCTYPE html>
 <html>
 
@@ -57,11 +69,11 @@
               <form>
                 <div class="form-group">
                   <label class="control-label">Gambar</label>
-                  <input type="file" class="form-control">
+                  <input type="file" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Nama Menu</label>
-                  <input type="text" placeholder="Masukkan nama menu" class="form-control">
+                  <input type="text" placeholder="Masukkan nama menu" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Kategori</label>
@@ -72,58 +84,51 @@
                 </div>
                 <div class="form-group">
                   <label class="control-label">Estimasi Penyajian (menit)</label>
-                  <input type="number" placeholder="Masukkan estimasi penyajian" class="form-control">
+                  <input type="number" placeholder="Masukkan estimasi penyajian" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Harga</label>
-                  <input type="number" placeholder="Masukkan harga" class="form-control">
-                </div>
-                <div class="form-group">
-                  <label class="control-label">Diskon</label>
-                  <div class="animated-radio-button">
-                    <label>
-                      <input type="radio" name="radio"><span class="label-text">Ya</span>
-                    </label>
-                    <label>
-                      <input type="radio" name="radio"><span class="label-text">Tidak</span>
-                    </label>
-                  </div>
+                  <input type="number" placeholder="Masukkan harga" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Bahan Baku</label>
                   <div class="table-responsive">
-                    <table class="table table-hover table-bordered">
+                    <table class="table table-hover table-bordered" id="table-ingredients">
                       <thead>
                         <tr>
                           <th>Bahan</th>
-                          <th>Qty</th>
-                          <th>Aksi</th>
+                          <th>Kuantitas</th>
+                          <th>Aksi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onClick="addField()" style="pointer: cursor;"><i class="fa fa-plus"></i></a></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td>
                             <select class="form-control input-sm">
-                              <option>Makanan</option>
-                              <option>Minuman</option>
+                              <?php
+                              $strQuery = "SELECT id_bahanbaku, nama_bahanbaku FROM bahanbaku";
+                              $query = mysqli_query($connection, $strQuery);
+                              while($result = mysqli_fetch_assoc($query)){
+                                echo "<option value=$result[id_bahanbaku]>$result[nama_bahanbaku]</option>";
+                              }
+                              ?>
                             </select>
                           </td>
                           <td>
-                            <input type="number" placeholder="Masukkan qty" class="form-control input-sm">
+                            <input type="number" placeholder="Masukkan kuantitas" class="form-control input-sm">
                           </td>
                           <td>
-                            <a href=""><i class="fa fa-close"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a href=""><i class="fa fa-check"></i></a>
+                            <a href=""><i class="fa fa-close"></i></a>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
+                <div class="card-footer" style="text-align: center;">
+                  <button type="submit" class="btn btn-primary icon-btn input-lg"><i class="fa fa-fw fa-lg fa-check-circle"></i>Simpan</button>
+                </div>
               </form>
-            </div>
-            <div class="card-footer">
-              <button type="button" class="btn btn-primary icon-btn"><i class="fa fa-fw fa-lg fa-check-circle"></i>Simpan</button>
             </div>
           </div>
         </div>
@@ -136,6 +141,39 @@
   <script src="../assets/js/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/pace.min.js"></script>
   <script src="../assets/js/main.js"></script>
+  <script>
+    function addField () {
+        var myTable = document.getElementById("table-ingredients");
+        var currentIndex = myTable.rows.length;
+        var currentRow = myTable.insertRow(-1);
+
+        var linksBox = document.createElement("input");
+        linksBox.setAttribute("name", "links" + currentIndex);
+
+        var kuantitasBox = document.createElement("input");
+        kuantitasBox.setAttribute("name", "qty");
+        kuantitasBox.setAttribute("type", "number");
+        kuantitasBox.setAttribute("class", "form-control input-sm");
+        kuantitasBox.setAttribute("placeholder", "Masukkan kuantitas");
+
+        var violationsBox = document.createElement("select");
+        var array = ["Volvo","Saab","Mercades","Audi"];
+        selectList.id = "mySelect";
+        violationsBox.setAttribute("name", "violationtype" + currentIndex);
+
+        var currentCell = currentRow.insertCell(-1);
+        currentCell.appendChild(linksBox);
+
+        currentCell = currentRow.insertCell(-1);
+        currentCell.appendChild(kuantitasBox);
+
+        currentCell = currentRow.insertCell(-1);
+        currentCell.appendChild(violationsBox);
+
+        currentCell = currentRow.insertCell(-1);
+        currentCell.appendChild(addRowBox);
+    }
+    </script>
 </body>
 
 </html>

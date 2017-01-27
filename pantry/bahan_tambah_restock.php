@@ -43,10 +43,11 @@
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan</span><i class="fa fa-angle-right"></i></a>
+            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan Baku</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
-                <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan</a></li>
-                <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan</a></li>
+                <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan Baku</a></li>
+                <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan Baku</a></li>
+                <li><a href="bahan_tambah_restock.php"><i class="fa fa-refresh"></i> Restock Bahan Baku</a></li>
               </ul>
             </li>
           </ul>
@@ -63,19 +64,40 @@
           <div class="col-md-3"></div>
           <div class="col-md-6">
             <div class="card">
-              <h3 class="card-title">Tambah Data Detail Bahan Baku</h3>
+              <h3 class="card-title">Tambah Data Bahan Baku</h3>
               <div class="card-body">
-                <form action="proses/bahan_detail_tambah_proses.php" method="POST">
+                <form action="proses/bahan_tambah_restock_proses.php" method="POST">
+                  <div class="form-group">
+                    <label class="control-label">Nama Bahan Baku</label>
+                    <select name="id" placeholder="Masukkan nama bahan baku" class="form-control">
+                        <?php
+                        $strQuery = "SELECT id_bahanbaku, nama_bahanbaku FROM bahanbaku ORDER BY nama_bahanbaku ASC";
+                        $query = mysqli_query($connection, $strQuery);
+                        while($result = mysqli_fetch_assoc($query)){
+                          echo "<option value=$result[id_bahanbaku]>$result[nama_bahanbaku]</option>";
+                        }
+                        ?>
+                    </select>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="control-label">Stok</label>
+                        <input type="number" name="stok" placeholder="Masukkan stok" class="form-control" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="control-label">Satuan</label>
+                        <input type="text" name="satuan" placeholder="Masukkan satuan (cth: gram)" class="form-control" required>
+                      </div>
+                    </div>
+                  </div>
                   <div class="form-group">
                     <label class="control-label">Tanggal Kadaluarsa</label>
-                    <input type="date" name="tgl_kadaluarsa" placeholder="Masukkan tanggal kadaluarsa" class="form-control input-sm" required>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label">Kuantitas</label>
-                    <input type="number" name="qty" placeholder="Masukkan kuantitas" class="form-control" required>
+                    <input name="tgl_kadaluarsa" placeholder="Masukkan tanggal kadaluarsa" id="tgl_kadaluarsa" class="form-control" required>
                   </div>
                   <div class="card-footer" style="text-align: center;">
-                    <input type="hidden" name="id" value="<?php echo $_GET['id'];?>" />
                     <button type="submit" class="btn btn-primary icon-btn input-lg"><i class="fa fa-fw fa-lg fa-check-circle"></i>Simpan</button>
                   </div>
                 </form>
@@ -92,6 +114,14 @@
     <script src="../assets/js/plugins/pace.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/plugins/sweetalert.min.js"></script>
+    <script type="text/javascript" src="../assets/js/plugins/bootstrap-datepicker.min.js"></script>
+    <script>
+      $('#tgl_kadaluarsa').datepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayHighlight: true
+      });
+    </script>
     <!--Handling Error and Success Message-->
     <?php
     if(isset($_GET['e'])) {
@@ -101,6 +131,8 @@
           </script>";
       }
     }
+
+    mysqli_close($connection);
     ?>
   </body>
 
