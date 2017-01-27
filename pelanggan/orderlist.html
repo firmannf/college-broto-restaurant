@@ -49,14 +49,28 @@
     </div>
     <div class="row">
       <div class="col-md-6 col-xs-6 col-lg-6">
-       <button id="buttonBayar" name="buttonBayar" class="btn btn-primary  center-block" style="margin-top: 40px;">
+       <button id="pilihMenu" name="pilihMenu" class="btn btn-primary  center-block" style="margin-top: 40px;">
            <h3>Pilih menu lagi</h3>
        </button>
      </div>
      <div class="col-md-6 col-xs-6 col-lg-6">
-      <button id="buttonBayar" name="buttonBayar" class="btn btn-success center-block" style="margin-top: 40px;">
+      <button id="pesanSekarang" name="pesanSekarang" class="btn btn-success center-block" onClick="alertPesan()" style="margin-top: 40px;">
           <h3>Pesan Sekarang<h3>
       </button>
+      <script>
+      function alertPesan (){
+        swal({
+  title: "Pesan Sekarang?",
+  text: "Makanan dan Minuman yang sudah dipesan tidak bisa dibatalkan",
+  type: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#DD6B55",
+  confirmButtonText: "Ya, pesan sekarang!",
+  cancelButtonText: "Tidak, Periksa Kembali",
+  closeOnConfirm: false
+});
+      }
+      </script>
     </div>
     </div>
   </div>
@@ -68,6 +82,7 @@
   <script src="../assets/js/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/pace.min.js"></script>
   <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/plugins/sweetalert.min.js"></script>
 </body>
 
 </html>
