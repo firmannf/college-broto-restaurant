@@ -63,7 +63,7 @@
                 <li><a href="pegawai_tambah.php"><i class="fa fa-plus"></i> Tambah Pegawai</a></li>
               </ul>
             </li>
-            <li><a href="index.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
+            <li><a href="menu_list.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
           </ul>
         </section>
       </aside>
@@ -129,6 +129,8 @@
           </script>";
       }
     }
+
+    mysqli_close($connection);
     ?>
   </body>
 

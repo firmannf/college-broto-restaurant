@@ -49,7 +49,7 @@
                 <li><a href="pegawai_tambah.php"><i class="fa fa-plus"></i> Tambah Pegawai</a></li>
               </ul>
             </li>
-            <li><a href="index.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
+            <li><a href="menu_list.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
           </ul>
         </section>
       </aside>
@@ -64,7 +64,6 @@
           <div class="col-md-12">
             <div class="card" style="padding: 16px 48px;">
               <div style="margin-top: 16px;">
-                <a href="#" onClick="searchKeywords()" class="btn btn-default pull-right" style="margin-left: 12px;"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Cari</a>
                 <?php
                 if(isset($_GET['q'])) {
                 ?>
@@ -75,7 +74,7 @@
                 <h3 class="card-title">Daftar Pegawai</h3>
               </div>
               <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+                <table id="pegawai" class="table table-hover table-bordered">
                   <thead>
                     <tr>
                       <th>NIK</th>
@@ -88,7 +87,7 @@
                     <?php
                     if(isset($_GET['q'])){
                       $strQuery = "SELECT nik, nama_pegawai, pekerjaan FROM pegawai WHERE pekerjaan != 'Admin'
-                                    AND nik LIKE '%$_GET[q]%' OR nama LIKE '%$_GET[q]%' OR pekerjaan LIKE '%$_GET[q]%' ORDER BY nik ASC";
+                                    AND nik LIKE '%$_GET[q]%' OR nama_pegawai LIKE '%$_GET[q]%' OR pekerjaan LIKE '%$_GET[q]%' ORDER BY nik ASC";
                     }else {
                       $strQuery = "SELECT nik, nama_pegawai, pekerjaan FROM pegawai WHERE pekerjaan != 'Admin' ORDER BY nik ASC";
                     }
@@ -197,6 +196,9 @@
         });
       }
     </script>
+    <script type="text/javascript" src="../assets/js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../assets/js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">$('#pegawai').DataTable();</script>
     <!--Handling Error and Success Message-->
     <?php
     if(isset($_GET['m'])) {
@@ -206,7 +208,7 @@
           </script>";
       } else if($_GET['m'] === 'success-edit-data') {
           echo "<script type=text/javascript>
-                swal('Berhasil', 'Data Berhasil diedit', 'success');
+                swal('Berhasil', 'Data Berhasil Diedit', 'success');
           </script>";
       }
     }

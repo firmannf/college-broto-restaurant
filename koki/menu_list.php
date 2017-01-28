@@ -43,8 +43,8 @@
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li><a href="pesanan_list.php"><i class="fa fa-dashboard"></i><span>Daftar Pesanan</span></a></li>
-            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Menu</span><i class="fa fa-angle-right"></i></a>
+            <li><a href="pesanan_list.php"><i class="fa fa-list-alt"></i><span>Daftar Pesanan</span></a></li>
+            <li class="treeview active"><a href="#"><i class="fa fa-cutlery"></i><span>Atur Menu</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="menu_list.php"><i class="fa fa-th-large"></i> Daftar Menu</a></li>
                 <li><a href="menu_tambah.php"><i class="fa fa-plus"></i> Tambah Menu</a></li>

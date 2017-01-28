@@ -42,8 +42,8 @@
       <aside class="main-sidebar hidden-print">
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
-            <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan Baku</span><i class="fa fa-angle-right"></i></a>
+            <li class="active"><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+            <li class="treeview"><a href="#"><i class="fa fa-user"></i><span>Atur Bahan Baku</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="bahan_list.php"><i class="fa fa-th-large"></i> Daftar Bahan Baku</a></li>
                 <li><a href="bahan_tambah.php"><i class="fa fa-plus"></i> Tambah Bahan Baku</a></li>
@@ -62,7 +62,7 @@
         </div>
         <div class="row">
           <div class="col-md-3">
-            <div class="widget-small primary"><i class="icon fa fa-users fa-3x"></i>
+            <div class="widget-small info"><i class="icon fa fa-users fa-3x"></i>
               <div class="info">
                 <h4>Bahan Baku</h4>
                 <p>
@@ -78,13 +78,29 @@
             </div>
           </div>
           <div class="col-md-3">
-            <div class="widget-small info"><i class="icon fa fa-users fa-3x"></i>
+            <div class="widget-small warning"><i class="icon fa fa-users fa-3x"></i>
               <div class="info">
                 <h4>Kadaluarsa</h4>
                 <p>
                   <b>
                   <?php
                     $strQuery = "SELECT id_bahanbaku FROM bahanbaku WHERE tgl_kadaluarsa < NOW()";
+                    $query = mysqli_query($connection, $strQuery);
+                    echo mysqli_num_rows($query); 
+                  ?> 
+                </b>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="widget-small danger"><i class="icon fa fa-users fa-3x"></i>
+              <div class="info">
+                <h4>Habis</h4>
+                <p>
+                  <b>
+                  <?php
+                    $strQuery = "SELECT id_bahanbaku FROM bahanbaku WHERE stok <= 0";
                     $query = mysqli_query($connection, $strQuery);
                     echo mysqli_num_rows($query); 
                   ?> 

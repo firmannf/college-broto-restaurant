@@ -43,7 +43,7 @@
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li class="active"><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-            <li><a href="pesanan_list.php"><i class="fa fa-user"></i><span>Daftar Pesanan</span></a></li>
+            <li><a href="pesanan_list.php"><i class="fa fa-list-alt"></i><span>Daftar Pesanan</span></a></li>
             <li class="treeview"><a href="#"><i class="fa fa-cutlery"></i><span>Atur Menu</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="menu_list.php"><i class="fa fa-th-large"></i> Daftar Menu</a></li>
@@ -126,7 +126,7 @@
                 <h3 class="card-title">Menu Makanan Tersedia</h3>
               </div>
               <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+                <table class="table table-hover table-borderless">
                   <tbody>
                     <?php
                       $strQuery = "SELECT m.id_menu, m.nama_menu, m.foto

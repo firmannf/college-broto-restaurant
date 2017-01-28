@@ -43,8 +43,8 @@
       <section class="sidebar">
         <ul class="sidebar-menu" style="padding-top: 24px;">
           <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
-          <li><a href="pesanan_list.php"><i class="fa fa-dashboard"></i><span>Daftar Pesanan</span></a></li>
-          <li class="treeview active"><a href="#"><i class="fa fa-user"></i><span>Atur Menu</span><i class="fa fa-angle-right"></i></a>
+          <li><a href="pesanan_list.php"><i class="fa fa-list-alt"></i><span>Daftar Pesanan</span></a></li>
+          <li class="treeview active"><a href="#"><i class="fa fa-cutlery"></i><span>Atur Menu</span><i class="fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
               <li><a href="menu_list.php"><i class="fa fa-th-large"></i> Daftar Menu</a></li>
               <li><a href="menu_tambah.php"><i class="fa fa-plus"></i> Tambah Menu</a></li>
@@ -97,7 +97,7 @@
                       <thead>
                         <tr>
                           <th>Bahan</th>
-                          <th>Kuantitas</th>
+                          <th>Jumlah</th>
                           <th>Aksi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onClick="addField()" style="pointer: cursor;"><i class="fa fa-plus"></i></a></th>
                         </tr>
                       </thead>
@@ -106,7 +106,7 @@
                           <td>
                             <select class="form-control input-sm">
                               <?php
-                              $strQuery = "SELECT id_bahanbaku, nama_bahanbaku FROM bahanbaku";
+                              $strQuery = "SELECT id_bahanbaku, nama_bahanbaku FROM bahanbaku ORDER BY nama_bahanbaku ASC";
                               $query = mysqli_query($connection, $strQuery);
                               while($result = mysqli_fetch_assoc($query)){
                                 echo "<option value=$result[id_bahanbaku]>$result[nama_bahanbaku]</option>";
@@ -115,10 +115,9 @@
                             </select>
                           </td>
                           <td>
-                            <input type="number" placeholder="Masukkan kuantitas" class="form-control input-sm">
+                            <input type="number" placeholder="Masukkan jumlah" class="form-control input-sm">
                           </td>
                           <td>
-                            <a href=""><i class="fa fa-close"></i></a>
                           </td>
                         </tr>
                       </tbody>
@@ -142,36 +141,56 @@
   <script src="../assets/js/plugins/pace.min.js"></script>
   <script src="../assets/js/main.js"></script>
   <script>
-    function addField () {
-        var myTable = document.getElementById("table-ingredients");
-        var currentIndex = myTable.rows.length;
-        var currentRow = myTable.insertRow(-1);
+    function addField() {
+      $.ajax({
+        url: "proses/bahanbaku_data_json.php",
+        method: "GET",
+        success: function (data) {
+          var myTable = document.getElementById("table-ingredients");
+          var id = [];
+          var nama = [];
+          var tempData = [];
+          tempData = JSON.parse(data);
+          var currentIndex = myTable.rows.length;
+          var currentRow = myTable.insertRow(-1);
+console.log(currentIndex);
+          var bahanbakuBox = document.createElement("select");
+          bahanbakuBox.setAttribute("name", "id_bahanbaku");
+          bahanbakuBox.setAttribute("class", "form-control input-sm");
 
-        var linksBox = document.createElement("input");
-        linksBox.setAttribute("name", "links" + currentIndex);
+          for (var i = 0; i < tempData.length; i++) {
+            var option = document.createElement("option");
+            option.setAttribute("value", tempData[i].id_bahanbaku);
+            option.text = tempData[i].nama_bahanbaku;
+            bahanbakuBox.appendChild(option);
+          }
 
-        var kuantitasBox = document.createElement("input");
-        kuantitasBox.setAttribute("name", "qty");
-        kuantitasBox.setAttribute("type", "number");
-        kuantitasBox.setAttribute("class", "form-control input-sm");
-        kuantitasBox.setAttribute("placeholder", "Masukkan kuantitas");
+          var jumlahBox = document.createElement("input");
+          jumlahBox.setAttribute("name", "qty");
+          jumlahBox.setAttribute("type", "number");
+          jumlahBox.setAttribute("class", "form-control input-sm");
+          jumlahBox.setAttribute("placeholder", "Masukkan jumlah");
 
-        var violationsBox = document.createElement("select");
-        var array = ["Volvo","Saab","Mercades","Audi"];
-        selectList.id = "mySelect";
-        violationsBox.setAttribute("name", "violationtype" + currentIndex);
+          var closeBox = document.createElement("a");
+          closeBox.setAttribute("href", "javascript:deleteBaris(" + currentIndex + ");");
+          var iconBox = document.createElement("i");
+          iconBox.setAttribute("class", "fa fa-close");
+          closeBox.appendChild(iconBox);
 
-        var currentCell = currentRow.insertCell(-1);
-        currentCell.appendChild(linksBox);
+          currentCell = currentRow.insertCell(-1);
+          currentCell.appendChild(bahanbakuBox);
 
-        currentCell = currentRow.insertCell(-1);
-        currentCell.appendChild(kuantitasBox);
+          currentCell = currentRow.insertCell(-1);
+          currentCell.appendChild(jumlahBox);
 
-        currentCell = currentRow.insertCell(-1);
-        currentCell.appendChild(violationsBox);
+          var currentCell = currentRow.insertCell(-1);
+          currentCell.appendChild(closeBox);
+        }
+      });
+    }
 
-        currentCell = currentRow.insertCell(-1);
-        currentCell.appendChild(addRowBox);
+    function deleteBaris(position) {
+      document.getElementById("table-ingredients").deleteRow(position);
     }
     </script>
 </body>

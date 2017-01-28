@@ -10,7 +10,13 @@
 	$query = mysqli_query($connection, $strQuery);
 	if(!$query){
 	    echo "<script type=text/javascript>document.location.href='../index.php?e=bad-request'</script>";
-	}else {
+	}else {		
+		echo "<script type=text/javascript>
+				window.open(
+					\"nota_cetak_proses.php?id=$id\",
+					\"_blank\"
+					);
+			  </script>";
 	    echo "<script type=text/javascript>document.location.href='../index.php?m=success-edit-data'</script>";
     }
 

@@ -31,7 +31,7 @@
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama_pegawai'];?></b></a>
                 <ul class="dropdown-menu settings-menu">
-                  <li><a href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+                  <li><a href="setting.php"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
                   <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
                 </ul>
               </li>
@@ -52,23 +52,26 @@
             <h1><i class="fa fa-dashboard"></i> Validasi Pembayaran</h1>
             <p>Selamat datang di halaman validasi pembayaran kasir resto broto</p>
           </div>
-          <div class="col-md-4">
-            <a href="#" onClick="searchKeywords()" class="btn btn-default pull-right" style="margin-left: 12px;"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Cari</a>
+          <div>
             <?php
             if(isset($_GET['q'])) {
             ?>
-            <a href="index.php" class="btn btn-primary pull-right"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Kembali</a>
+            <a href="index.php" class="btn btn-success btn-flat"><i class="fa fa-arrow-left"></i></a>
             <?php
             }
             ?>
+            <a href="#" onClick="searchKeywords()" class="btn btn-default btn-flat"><i class="fa fa-search"></i></a>
           </div>
         </div>
         <div class="row">
           <?php
           if(isset($_GET['q'])){
-            $strQuery = "SELECT id_pesanan, tgl_order, nama_pelanggan, uang_bayar, status FROM pesanan WHERE id_pesanan LIKE '%$_GET[q]%' OR nama_pelanggan LIKE '%$_GET[q]%'ORDER BY tgl_order ASC";
+            $strQuery = "SELECT id_pesanan, tgl_order, nama_pelanggan, uang_bayar, status 
+                          FROM pesanan WHERE id_pesanan = '$_GET[q]' 
+                          OR nama_pelanggan LIKE '%$_GET[q]%' ORDER BY tgl_order ASC";
           }else {
-            $strQuery = "SELECT id_pesanan, tgl_order, nama_pelanggan, uang_bayar, status FROM pesanan ORDER BY tgl_order ASC";
+            $strQuery = "SELECT id_pesanan, tgl_order, nama_pelanggan, uang_bayar, status 
+                          FROM pesanan ORDER BY tgl_order ASC";
           }
           $query = mysqli_query($connection, $strQuery);
           $i = 0;
@@ -85,7 +88,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td><b>Tanggal</b></td>
+                      <td><b>Tanggal Pesanan</b></td>
                       <td>
                         <?php echo $result['tgl_order'];?>
                       </td>
@@ -100,15 +103,16 @@
                       <td colspan="2" style="text-align: right;">
                         <br/>
                         <?php
-                        if($result['status'] === "Belum Bayar") {
+                          if($result['status'] === "Belum Bayar") {
                         ?>
-                          <a data-toggle="modal" data-target="#detail<?php echo $i;?>" class="btn btn-primary">Validasi</a>
-                          <?php
-                        } else {
+                        <a data-toggle="modal" data-target="#detail<?php echo $i;?>" class="btn btn-primary">Validasi</a>
+                        <?php
+                          } else {
                         ?>
-                            <a data-toggle="modal" data-target="#detail<?php echo $i;?>" class="btn btn-success">Valid</a>
-                            <?php
-                        }
+                        <a href="proses/nota_cetak_proses.php?id=<?php echo $result['id_pesanan'];?>" class="btn btn-default" target="_blank"><i class="fa fa-print"></i></a>
+                        <a data-toggle="modal" data-target="#detail<?php echo $i;?>" class="btn btn-success">Sudah Bayar</a>
+                        <?php
+                          }
                         ?>
                       </td>
                     </tr>
@@ -148,7 +152,7 @@
                       <table class="table table-bordered">
                         <thead>
                           <tr>
-                            <td>Nama Pesanan</td>
+                            <td>Nama Menu</td>
                             <td>Harga</td>
                             <td>Qty</td>
                             <td>Subtotal</td>
@@ -207,7 +211,7 @@
                               <?php
                               if($result['status'] === "Belum Bayar") {
                               ?>
-                              <td style="text-align: right"><input type="number" name="uang_bayar" class="form-control input-sm" /></td>
+                              <td style="text-align: right"><input type="number" name="uang_bayar" class="form-control input-sm" required/></td>
                               <?php
                               } else {
                               ?>
@@ -226,7 +230,7 @@
                       ?>
                       <input type="hidden" name="id" value="<?php echo $result['id_pesanan'];?>">
                       <input type="hidden" name="total_bayar" value="<?php echo $grandtotal;?>">
-                      <button type="submit" class="btn btn-primary">Validasi</a>
+                      <button type="submit" class="btn btn-primary" >Validasi dan Cetak Nota</a>
                       <?php
                       }
                       ?>

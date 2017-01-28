@@ -48,7 +48,7 @@
                 <li><a href="pegawai_tambah.php"><i class="fa fa-plus"></i> Tambah Pegawai</a></li>
               </ul>
             </li>
-            <li><a href="index.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
+            <li><a href="menu_list.php"><i class="fa fa-cutlery"></i><span>Atur Menu</span></a></li>
           </ul>
         </section>
       </aside>
@@ -110,7 +110,7 @@
     if(isset($_GET['e'])) {
       if($_GET['e'] === 'bad-request') {
           echo "<script type=text/javascript>
-                swal('400 Bad Request', 'Terjadi Kesalahan Saat Memproses Data Login', 'error');
+                swal('400 Bad Request', 'Terjadi Kesalahan Saat Memproses Data Pegawai', 'error');
           </script>";
       }
     }

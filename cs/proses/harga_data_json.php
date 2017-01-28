@@ -1,7 +1,7 @@
 <?php
 	require "../../proses/connection.php";
 			
-	$strQuery = "SELECT SUM(k.harga) as harga, MONTHNAME(p.tgl_order) as bulan FROM kuesioner k INNER JOIN pesanan p 
+	$strQuery = "SELECT ROUND(AVG(k.harga), 1) as harga, MONTHNAME(p.tgl_order) as bulan FROM kuesioner k INNER JOIN pesanan p 
                     ON k.id_pesanan = p.id_pesanan
                     GROUP BY MONTHNAME(p.tgl_order)
                     ORDER BY MONTHNAME(p.tgl_order) DESC";
