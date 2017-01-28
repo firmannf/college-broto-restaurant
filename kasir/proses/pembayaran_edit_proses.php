@@ -6,8 +6,8 @@
 	$uang_bayar = $_POST['uang_bayar'];
 
 	$strQuery = "UPDATE pesanan SET nik = '$_SESSION[nik]', total_bayar = '$total_bayar', uang_bayar = '$uang_bayar', status = 'Bayar' WHERE id_pesanan = '$id'";
-
 	$query = mysqli_query($connection, $strQuery);
+	
 	if(!$query){
 	    echo "<script type=text/javascript>document.location.href='../index.php?e=bad-request'</script>";
 	}else {		

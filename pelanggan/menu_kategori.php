@@ -1,3 +1,9 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['id_meja'])){
+      echo "<script type=text/javascript>document.location.href='index.php?e=unauthorized'</script>";
+	}
+?>
 <!DOCTYPE html>
 <html>
 

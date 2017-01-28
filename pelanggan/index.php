@@ -72,6 +72,14 @@
           </script>";
       }
     }
+
+    if(isset($_GET['m'])) {
+      if($_GET['m'] === 'good-bye') {
+          echo "<script type=text/javascript>
+                swal('Semoga Anda Puas dan Jangan Lupa Untuk Datang Kembali');
+          </script>";
+      }
+    }
   ?>
 </body>
 </html>

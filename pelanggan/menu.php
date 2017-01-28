@@ -1,5 +1,8 @@
 <?php
-session_start();
+  session_start();
+  if(!isset($_SESSION['id_meja'])){
+      echo "<script type=text/javascript>document.location.href='index.php?e=unauthorized'</script>";
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,7 +23,8 @@ session_start();
         <div class="logo-center">Resto Broto</div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li class="nav"></a>
+            <li class="nav">
+              </a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -33,14 +37,15 @@ session_start();
     <section id="body" class="container" style="margin-top:80px;">
       <div class="col-md-6 col-lg-6 col-xs-6">
         <a href="menu_kategori.php">
-        <div class="card text-center">
-          <div class="card-block">
-            <h4 class="card-title"><i class="fa fa-cutlery fa-3x" aria-hidden="true"></i></h4>
-            <p class="card-text">
-              <h6><b>Pilih Menu</b><h6>
-            </p>
+          <div class="card text-center">
+            <div class="card-block">
+              <h4 class="card-title"><i class="fa fa-cutlery fa-3x" aria-hidden="true"></i></h4>
+              <p class="card-text">
+                <h6><b>Pilih Menu</b>
+                  <h6>
+              </p>
+            </div>
           </div>
-        </div>
         </a>
       </div>
       <div class="col-md-6 col-lg-6 col-xs-6">
@@ -49,7 +54,8 @@ session_start();
             <div class="card-block">
               <h4 class="card-title"><i class="fa fa-money fa-3x" aria-hidden="true"></i></h4>
               <p class="card-text">
-                <h6><b>Bayar Order</b><h6>
+                <h6><b>Bayar Order</b>
+                  <h6>
               </p>
             </div>
           </div>
@@ -61,7 +67,21 @@ session_start();
             <div class="card-block">
               <h4 class="card-title"><i class="fa fa-star fa-3x" aria-hidden="true"></i></h4>
               <p class="card-text">
-                <h6><b>Beri Review</b><h6>
+                <h6><b>Beri Review</b>
+                  <h6>
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xs-6">
+        <a href="proses/akhir.php">
+          <div class="card text-center">
+            <div class="card-block">
+              <h4 class="card-title"><i class="fa fa-sign-out fa-3x" aria-hidden="true"></i></h4>
+              <p class="card-text">
+                <h6><b>Sudahi Sesi</b>
+                  <h6>
               </p>
             </div>
           </div>
@@ -102,6 +122,10 @@ session_start();
           echo "<script type=text/javascript>
                 swal('Terima Kasih', 'Anda Sudah Memberikan Review, Semoga Kedepannya Resto Broto Menjadi Lebih Baik', 'success');
           </script>";
+      } else if($_GET['e'] === 'unauthorized') {
+        echo "<script type=text/javascript>
+              swal('401 Unauthorized', 'Anda Tidak Mempunyai Akses ke Halaman Tersebut', 'error');
+        </script>";
       }
     }
   ?>
