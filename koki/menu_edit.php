@@ -279,14 +279,14 @@
                   cache: false,
                   success: function (data) {
                     if (data == 'error') {
-                      swal("400 Bad Request", "Data Tidak Dapat dihapus", "error");
+                      swal("400 Bad Request", "Data Tidak Dapat Dihapus", "error");
                     } else {
                       document.getElementById(self.id).remove();
                       swal("Berhasil", "Data Terhapus", "success");
                     }
                   },
                   error: function (data) {
-                    swal("400 Bad Request", "Data Tidak Dapat dihapus", "error");
+                    swal("400 Bad Request", "Data Tidak Dapat Dihapus", "error");
                   }
                 });
               }

@@ -31,7 +31,7 @@
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama_pegawai'];?></b></a>
                 <ul class="dropdown-menu settings-menu">
-                  <li><a href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+                  <li><a href="setting.php"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
                   <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
                 </ul>
               </li>
@@ -172,14 +172,14 @@
                   cache: false,
                   success: function (data) {
                     if (data == 'error') {
-                      swal("400 Bad Request", "Data Tidak Dapat dihapus", "error");
+                      swal("400 Bad Request", "Data Tidak Dapat Dihapus", "error");
                     } else {
                       document.getElementById(self.id).remove();
                       swal("Berhasil", "Data Terhapus", "success");
                     }
                   },
                   error: function (data) {
-                    swal("400 Bad Request", "Data Tidak Dapat dihapus", "error");
+                    swal("400 Bad Request", "Data Tidak Dapat Dihapus", "error");
                   }
                 });
               }
@@ -216,7 +216,7 @@
           </script>";
       } else if($_GET['m'] === 'success-edit-data') {
           echo "<script type=text/javascript>
-                swal('Berhasil', 'Data Berhasil diedit', 'success');
+                swal('Berhasil', 'Data Berhasil Diedit', 'success');
           </script>";
       }
     }

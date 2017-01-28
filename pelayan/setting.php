@@ -29,13 +29,17 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
             <li class="nav">
-              </a>
+              <a href="index.php"><i class="fa fa-arrow-left fa-lg" style="margin-left: 16px;"></i></a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="nav">
-              <a href="setting.php"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i></a>
-            </li>
+              <li class="dropdown">
+                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i></a>
+                <ul class="dropdown-menu settings-menu" style="width: 20px;">
+                  <li><a href="setting.php"><i class="fa fa-cog fa-lg"></i> Setting</a></li>
+                  <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+                </ul>
+              </li>
           </ul>
         </div>
       </nav>
