@@ -1,8 +1,8 @@
 <?php
 	require "../../proses/connection.php";
     session_start();
-    $strQuery = "SELECT id_pesanan, tgl_order, nama_pelanggan, uang_bayar, status 
-                          FROM pesanan WHERE id_pesanan = '$_GET[id]'";
+    $strQuery = "SELECT pe.nama_pegawai, p.id_pesanan, p.tgl_order, p.nama_pelanggan, p.uang_bayar, p.status 
+                          FROM pesanan p INNER JOIN pegawai pe ON p.nik = pe.nik WHERE id_pesanan = '$_GET[id]'";
     $query = mysqli_query($connection, $strQuery);
     $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
     echo $result['nama_pelanggan'];
@@ -61,7 +61,7 @@
                     echo "</tr>";
                 }    
                 $pajak = $total * 0.10;
-                $grandtotal = $total - $pajak;
+                $grandtotal = $total + $pajak;
             ?>
         </tbody>
     </table>
@@ -89,10 +89,17 @@
             <td style="text-align:right;">&nbsp;&nbsp;&nbsp;Rp. <?php echo $result['uang_bayar'] - $grandtotal;?></td>
         </tr>
     </table>
+    <table>        
+        <tr>
+            <td><b>Nama Kasir</b></td>
+            <td style="text-align:right;">&nbsp;&nbsp;&nbsp;<?php echo $result['nama_pegawai'];?></td>
+        </tr>
+    </table>
 </body>
 
 </html>
 <?php
+        date_default_timezone_set("Asia/Jakarta");
 		$filename = "reviewpelanggan".date("YmdHis").".pdf";
 		$content = ob_get_clean();
 		$content = '<page style="font-family: freeserif">'.nl2br($content).'</page>';

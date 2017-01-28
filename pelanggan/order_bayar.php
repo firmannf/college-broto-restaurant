@@ -1,3 +1,7 @@
+<?php
+  require_once "../proses/connection.php";
+  session_start();
+  ?>
 <!DOCTYPE html>
 <html>
 
@@ -37,36 +41,55 @@
             <thead>
               <tr>
                 <th>Nama Pesanan</th>
-                <th>Qty</th>
+                <th>Harga</th>
+                <th>Jumlah</th>
                 <th>Subtotal</th>
               </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
             </thead>
+            <tbody>
+              <?php
+                            $strQuery = "SELECT m.id_menu, p.id_pesanan,m.nama_menu, m.harga, pd.qty 
+                            FROM pesanan_detail pd INNER JOIN pesanan p ON pd.id_pesanan = p.id_pesanan
+                            INNER JOIN menu m on pd.id_menu = m.id_menu 
+                            WHERE p.id_pesanan = '$_SESSION[id_pesanan]' ORDER BY m.id_menu ASC";
+                            $subquery = mysqli_query($connection, $strQuery);
+                            $i = 0;
+                            $total = 0;
+                            while($subRresult = mysqli_fetch_assoc($subquery)){
+                              echo "<tr>";
+                              echo "<td>$subRresult[nama_menu]</td>";
+                              echo "<td style=\"text-align: right\">Rp. $subRresult[harga]</td>";
+                              echo "<td>$subRresult[qty]</td>";
+                              $subtotal = $subRresult['harga'] * $subRresult['qty'];
+                              $total += $subtotal;
+                              echo "<td style=\"text-align: right\">Rp. $subtotal</td>";
+                              echo "</tr>";
+                            }
+                            $pajak = $total * 0.10;
+                            $grandtotal = $total + $pajak;
+                          ?>
+            </tbody>
           </table>
         </div>
         <div class="row">
           <div class="col-md-6 text-right">
-            <b>Subtotal</b> : Rp. 42
+            <b>Subtotal</b> Rp. <?php echo $total;?>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 text-right">
-            <b>Pajak</b> : Rp. 42
+            <b>Pajak</b> &nbsp;&nbsp;&nbsp;Rp. <?php echo $pajak;?>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 text-right">
-            <b>Total</b> : Rp. 42
+            <b>Total</b> &nbsp;Rp. <?php echo $grandtotal;?>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <button id="singlebutton" name="singlebutton" class="btn btn-success center-block" style="margin: 20px auto; width: 70%;">
+          <button onClick="bayarOrder(<?php echo $_SESSION['id_meja'];?>)" class="btn btn-success center-block" style="margin: 20px auto; width: 70%;">
             Bayar Order
           </button>
         </div>
@@ -81,7 +104,9 @@
   <script src="../assets/js/main.js"></script>
   <script src="../assets/js/plugins/sweetalert.min.js"></script>
   <script>
-    function bayarOrder() {
+    function bayarOrder(id) {
+      this.id = id;
+      var self = this;
       swal({
         title: "Mohon Tunggu",
         text: "Pelayanan kami akan datang untuk melakukan konfirmasi pembayaran, Terimakasih sudah mengunjungi Resto Broto. semoga anda puas dan dapat kembali Lagi kesini, tekan OK untuk Melanjutkan",
@@ -91,8 +116,29 @@
         confirmButtonText: "OK",
         closeOnConfirm: false
       });
+
+      $.ajax({
+        url: 'proses/bayar_proses.php',
+        data: {
+          'id': self.id
+        },
+        dataType: "html",
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+          if (data == 'error') {
+            swal("400 Bad Request", "Terjadi Kesalahan Pada Sistem", "error");
+          }
+        },
+        error: function (data) {
+          swal("400 Bad Request", "Terjadi Kesalahan Pada Sistem", "error");
+        }
+      });
     }
   </script>
+  <?php
+    mysqli_close($connection);
+  ?>
 </body>
 
 </html>

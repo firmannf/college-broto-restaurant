@@ -63,15 +63,15 @@
             <a href="#" onClick="searchKeywords()" class="btn btn-default btn-flat"><i class="fa fa-search"></i></a>
           </div>
         </div>
-        <div class="row">
+        <div class="row" id="content">
           <?php
           if(isset($_GET['q'])){
             $strQuery = "SELECT id_pesanan, tgl_order, nama_pelanggan, uang_bayar, status 
                           FROM pesanan WHERE id_pesanan = '$_GET[q]' 
-                          OR nama_pelanggan LIKE '%$_GET[q]%' ORDER BY tgl_order ASC";
+                          OR nama_pelanggan LIKE '%$_GET[q]%' ORDER BY tgl_order DESC";
           }else {
             $strQuery = "SELECT id_pesanan, tgl_order, nama_pelanggan, uang_bayar, status 
-                          FROM pesanan ORDER BY tgl_order ASC";
+                          FROM pesanan ORDER BY tgl_order DESC";
           }
           $query = mysqli_query($connection, $strQuery);
           $i = 0;
@@ -178,7 +178,7 @@
                               echo "</tr>";
                             }
                             $pajak = $total * 0.10;
-                            $grandtotal = $total - $pajak;
+                            $grandtotal = $total + $pajak;
                           ?>
                         </tbody>
                       </table>
@@ -255,6 +255,23 @@
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/plugins/sweetalert.min.js"></script>
     <script>
+    $(document).ready(function () {
+      refresh();
+    });
+
+    function refresh() {
+      $.ajax({
+        type: 'POST',
+        url: 'proses/pesanan_list_proses.php',
+        success: function (response) {
+          $('#content').html(response);
+        },
+        complete: function () {
+          setTimeout(refresh, 30000);
+        }
+      });
+    }
+
     function searchKeywords() {
         swal({
           title: "Cari Pembayaran",
@@ -274,6 +291,11 @@
           document.location.href='index.php?q=' + inputValue;
         });
       }  
+    
+    
+    
+    
+    
     </script>
     <?php
     if(isset($_GET['m'])) {
@@ -284,7 +306,7 @@
       }
     }
 
-    echo mysqli_close($connection);
+    mysqli_close($connection);
     ?>
   </body>
 

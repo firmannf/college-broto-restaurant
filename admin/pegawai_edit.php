@@ -125,7 +125,7 @@
     if(isset($_GET['e'])) {
       if($_GET['e'] === 'bad-request') {
           echo "<script type=text/javascript>
-                swal('400 Bad Request', 'Terjadi Kesalahan Saat Memproses Data Login', 'error');
+                swal('400 Bad Request', 'Terjadi Kesalahan Saat Memproses Data Pegawai', 'error');
           </script>";
       }
     }

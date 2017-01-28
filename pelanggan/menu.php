@@ -82,6 +82,26 @@ session_start();
           echo "<script type=text/javascript>
                 swal('Selamat Datang $_SESSION[nama_pelanggan]');
           </script>";
+      } else if($_GET['m'] === 'success-add-data') {
+          echo "<script type=text/javascript>
+                swal('Berhasil', 'Data Berhasil Ditambahkan', 'success');
+          </script>";
+      } else if($_GET['m'] === 'success-edit-data') {
+          echo "<script type=text/javascript>
+                swal('Berhasil', 'Data Berhasil Diedit', 'success');
+          </script>";
+      }
+    }
+
+    if(isset($_GET['e'])) {
+      if($_GET['e'] === 'bad-request') {
+          echo "<script type=text/javascript>
+                swal('400 Bad Request', 'Terjadi Kesalahan Saat Memproses Data Pelanggan', 'error');
+          </script>";
+      }else if($_GET['e'] === 'already-exist') {
+          echo "<script type=text/javascript>
+                swal('Terima Kasih', 'Anda Sudah Memberikan Review, Semoga Kedepannya Resto Broto Menjadi Lebih Baik', 'success');
+          </script>";
       }
     }
   ?>

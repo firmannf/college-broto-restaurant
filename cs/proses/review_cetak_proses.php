@@ -54,6 +54,7 @@
 
 </html>
 <?php
+        date_default_timezone_set("Asia/Jakarta");
 		$filename = "reviewpelanggan".date("YmdHis").".pdf";
 		$content = ob_get_clean();
 		$content = '<page style="font-family: freeserif">'.nl2br($content).'</page>';

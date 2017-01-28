@@ -27,6 +27,7 @@
 		$target_dir = "../../uploads/menu/";
 		$foto = str_replace(" ","", $nama_menu);
 		$temp = explode(".", $_FILES["foto"]["name"]);
+        date_default_timezone_set("Asia/Jakarta");
 		$foto = strtolower($foto . date('YmdHis') . "." . end($temp));
 		$target_file = $target_dir . basename($foto);
 		if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {

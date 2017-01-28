@@ -1,11 +1,11 @@
 <?php
 	require "../../proses/connection.php";
-
+	session_start();
 	$id = $_POST['id'];
 	$total_bayar = $_POST['total_bayar'];
 	$uang_bayar = $_POST['uang_bayar'];
 
-	$strQuery = "UPDATE pesanan set total_bayar = '$total_bayar', uang_bayar = '$uang_bayar', status = 'Bayar' WHERE id_pesanan = '$id'";
+	$strQuery = "UPDATE pesanan SET nik = '$_SESSION[nik]', total_bayar = '$total_bayar', uang_bayar = '$uang_bayar', status = 'Bayar' WHERE id_pesanan = '$id'";
 
 	$query = mysqli_query($connection, $strQuery);
 	if(!$query){

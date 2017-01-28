@@ -119,7 +119,7 @@
     <script src="../assets/js/plugins/pace.min.js"></script>
     <script src="../assets/js/main.js"></script>
     <?php
-    echo mysqli_close($connection);
+    mysqli_close($connection);
   ?>
   </body>
 

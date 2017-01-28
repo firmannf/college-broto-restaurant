@@ -1,3 +1,16 @@
+<?php
+    require_once "../proses/connection.php";
+    session_start();
+    $strQuery = "SELECT id_kuesioner FROM kuesioner WHERE id_pesanan = '$_SESSION[id_pesanan]'";
+    $query = mysqli_query($connection, $strQuery);
+    if($query){
+        if(mysqli_num_rows($query) > 0) {
+            echo "<script type=text/javascript>document.location.href='menu.php?e=already-exist'</script>";
+        }
+    } else {
+        echo "<script type=text/javascript>document.location.href='menu.php?e=bad-request'</script>";
+    }
+?>
 <!DOCTYPE html>
 <html>
 
@@ -40,43 +53,49 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="form-group">
+                    <form method="post" action="proses/kuesioner_tambah_proses.php">
                         <div class="form-group">
-                            <label class="control-label col-md-2">Kritik dan Saran </label>
-                            <div class="col-md-10">
-                                <textarea cols="40" rows="6" class="form-control" placeholder="Silahkan masukan kritik dan Saran "></textarea>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Kritik dan Saran </label>
+                                <div class="col-md-10">
+                                    <textarea name="review" cols="40" rows="6" class="form-control" placeholder="Silahkan masukan kritik dan Saran "></textarea>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                </div>
+                                <div class="row lead">
+                                    <div class="col-md-6 col-xs-6">
+                                        Rating Pelayanan
+                                        <div id="pelayanan" class="starrr"></div>
+                                        <input id="valuepelayanan" type="hidden" name="pelayanan"/>
+                                    </div>
+                                    <div class="col-md-6 col-xs-6">
+                                        Rating Harga
+                                        <div id="harga" class="starrr"></div>
+                                        <input id="valueharga" type="hidden" name="harga"/>
+                                    </div>
+                                </div>
+                                <div class="row lead">
+                                    <div class="col-md-6 col-xs-6">
+                                        Rating Makanan
+                                        <div id="makanan" class="starrr"></div>
+                                        <input id="valuemakanan" type="hidden" name="makanan"/>
+                                    </div>
+                                    <div class="col-md-6 col-xs-6">
+                                        Rating Minuman
+                                        <div id="minuman" class="starrr"></div>
+                                        <input id="valueminuman" type="hidden" name="minuman"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="container">
-                            <div class="row">
-                            </div>
-                            <div class="row lead">
-                                <div class="col-md-6 col-xs-6">
-                                    Rating Pelayanan
-                                    <div id="stars" class="starrr"></div>
-                                </div>
-                                <div class="col-md-6 col-xs-6">
-                                    Rating Makanan
-                                    <div id="stars" class="starrr"></div>
-                                </div>
-                            </div>
-                            <div class="row lead">
-                                <div class="col-md-6 col-xs-6">
-                                    Rating Harga
-                                    <div id="stars" class="starrr"></div>
-                                </div>
-                                <div class="col-md-6 col-xs-6">
-                                    Rating Minuman
-                                    <div id="stars" class="starrr"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <button id="singlebutton" name="singlebutton" class="btn btn-success center-block" style="margin: 20px auto; width: 70%;">
-                                KIRIM REVIEW
+                        <div class="col-md-12">
+                            <button id="singlebutton" name="singlebutton" class="btn btn-success center-block" style="margin: 20px auto; width: 70%;">
+                                    KIRIM REVIEW
                             </button>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
     </div>
@@ -87,6 +106,7 @@
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/plugins/pace.min.js"></script>
     <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/plugins/sweetalert.min.js"></script>
     <script>
         // Starrr plugin (https://github.com/dobtco/starrr)
         var __slice = [].slice;
@@ -198,16 +218,32 @@
         });
 
         $(document).ready(function () {
-
-            $('#stars').on('starrr:change', function (e, value) {
-                $('#count').html(value);
+            $('#pelayanan').on('starrr:change', function (e, value) {
+                $('#valuepelayanan').val(value);
             });
 
-            $('#stars-existing').on('starrr:change', function (e, value) {
-                $('#count-existing').html(value);
+            $('#harga').on('starrr:change', function (e, value) {
+                $('#valueharga').val(value);
+            });
+
+            $('#makanan').on('starrr:change', function (e, value) {
+                $('#valuemakanan').val(value);
+            });
+
+            $('#minuman').on('starrr:change', function (e, value) {
+                $('#valueminuman').val(value);
             });
         });
     </script>
+    <?php
+    if(isset($_GET['e'])) {
+      if($_GET['e'] === 'bad-request') {
+          echo "<script type=text/javascript>
+                swal('400 Bad Request', 'Terjadi Kesalahan Saat Memproses Data Pelanggan', 'error');
+          </script>";
+      }
+    }
+    ?>
 </body>
 
 </html>
