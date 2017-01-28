@@ -23,7 +23,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="nav">
-                            <a href="#"><i class="fa fa-shopping-cart fa-lg" style="margin-right: 16px;"></i></a>
+                            <a href="order_list.php"><i class="fa fa-shopping-cart fa-lg" style="margin-right: 16px;"></i></a>
                         </li>
                     </ul>
                 </div>

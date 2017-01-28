@@ -23,7 +23,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="nav">
-              <a href="#"><i class="fa fa-shopping-cart fa-lg" style="margin-right: 16px;"></i></a>
+              <a href="order_list.php"><i class="fa fa-shopping-cart fa-lg" style="margin-right: 16px;"></i></a>
             </li>
           </ul>
         </div>
@@ -31,7 +31,7 @@
     </header>
     <section id="body" class="container" style="margin-top:80px;">
       <h2 align="center" style="margin-bottom:30px;"> Bayar Order </h2>
-      <div class="card" style="padding: 16px 48px; margin-top:40px">
+      <div class="card" style="padding: 16px 24px; margin-top: 40px">
         <div class="table-responsive" style="margin-top: 20px; background-color=#FFFFFF">
           <table class="table table-hover table-bordered">
             <thead>
@@ -50,17 +50,17 @@
         </div>
         <div class="row">
           <div class="col-md-6 text-right">
-            <h4> Subtotal : Rp. 42</h4>
+            <b>Subtotal</b> : Rp. 42
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 text-right">
-            <h4> Pajak : Rp. 42</h4>
+            <b>Pajak</b> : Rp. 42
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 text-right">
-            <h4> Total : Rp. 42</h4>
+            <b>Total</b> : Rp. 42
           </div>
         </div>
       </div>

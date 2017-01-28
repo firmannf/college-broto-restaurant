@@ -24,7 +24,7 @@ session_start();
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="nav"><a href="#"><i class="fa fa-shopping-cart fa-lg" style="margin-right: 16px;"></i></a>
+            <li class="nav"><a href="order_list.php"><i class="fa fa-shopping-cart fa-lg" style="margin-right: 16px;"></i></a>
             </li>
           </ul>
         </div>
@@ -44,7 +44,7 @@ session_start();
         </a>
       </div>
       <div class="col-md-6 col-lg-6 col-xs-6">
-        <a href="bayar_order.php">
+        <a href="order_bayar.php">
           <div class="card text-center">
             <div class="card-block">
               <h4 class="card-title"><i class="fa fa-money fa-3x" aria-hidden="true"></i></h4>
