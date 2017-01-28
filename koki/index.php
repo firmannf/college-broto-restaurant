@@ -129,18 +129,29 @@
                 <table class="table table-hover table-borderless">
                   <tbody>
                     <?php
-                      $strQuery = "SELECT m.id_menu, m.nama_menu, m.foto
-                            FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
-                            INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
-                            WHERE m.kategori = 'Makanan'
-                            GROUP BY m.id_menu
-                            HAVING m.id_menu 
-                            NOT IN(
-                              SELECT m.id_menu
-                              FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
-                              INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
-                              WHERE bb.tgl_kadaluarsa < NOW() OR bb.stok <= 0
-                            )";
+                      $strQuery = "SELECT m.id_menu, m.nama_menu, m.foto, bb.stok
+                                    FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
+                                    INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
+                                    WHERE m.kategori = 'Makanan'
+                                    GROUP BY m.id_menu
+                                    HAVING m.id_menu 
+                                    NOT IN(
+                                      SELECT m.id_menu
+                                      FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
+                                      INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
+                                      WHERE bb.tgl_kadaluarsa < NOW() OR bb.stok <= 0 OR m.id_menu IN
+                                      (
+                                        SELECT m.id_menu
+                                        FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
+                                        INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
+                                        WHERE m.id_menu IN (
+                                          SELECT m.id_menu
+                                          FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
+                                          INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
+                                          WHERE (bb.stok - md.qty) < 0
+                                        )
+                                      )
+                                    );";
                       $query = mysqli_query($connection, $strQuery);
                       $i = 0;
                       while($result = mysqli_fetch_assoc($query)){
@@ -166,18 +177,29 @@
                 <table class="table table-hover table-bordered">
                   <tbody>
                     <?php
-                      $strQuery = "SELECT m.id_menu, m.nama_menu, m.foto
-                            FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
-                            INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
-                            WHERE m.kategori = 'Minuman'
-                            GROUP BY m.id_menu
-                            HAVING m.id_menu 
-                            NOT IN(
-                              SELECT m.id_menu
-                              FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
-                              INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
-                              WHERE bb.tgl_kadaluarsa < NOW()
-                            )";
+                      $strQuery = "SELECT m.id_menu, m.nama_menu, m.foto, bb.stok
+                                    FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
+                                    INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
+                                    WHERE m.kategori = 'Minuman'
+                                    GROUP BY m.id_menu
+                                    HAVING m.id_menu 
+                                    NOT IN(
+                                      SELECT m.id_menu
+                                      FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
+                                      INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
+                                      WHERE bb.tgl_kadaluarsa < NOW() OR bb.stok <= 0 OR m.id_menu IN
+                                      (
+                                        SELECT m.id_menu
+                                        FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
+                                        INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
+                                        WHERE m.id_menu IN (
+                                          SELECT m.id_menu
+                                          FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
+                                          INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
+                                          WHERE (bb.stok - md.qty) < 0
+                                        )
+                                      )
+                                    );";
                       $query = mysqli_query($connection, $strQuery);
                       $i = 0;
                       while($result = mysqli_fetch_assoc($query)){

@@ -82,7 +82,7 @@
                     $strQuery = "SELECT pd.id_detail_pesanan, p.id_pesanan, me.nama_meja, m.nama_menu, pd.qty 
                                   FROM pesanan p INNER JOIN pesanan_detail pd ON p.id_pesanan = pd.id_pesanan 
                                   INNER JOIN meja me ON p.id_meja = me.id_meja
-                                  INNER JOIN menu m ON pd.id_menu = m.id_menu ORDER BY p.tgl_order ASC";
+                                  INNER JOIN menu m ON pd.id_menu = m.id_menu WHERE pd.status = 'Belum' ORDER BY p.tgl_order ASC";
                     $query = mysqli_query($connection, $strQuery);
                     $i = 0;
                     while($result = mysqli_fetch_assoc($query)){
@@ -91,7 +91,7 @@
                       echo "<td>$result[nama_meja]</td>";
                       echo "<td>$result[nama_menu]</td>";
                       echo "<td>$result[qty]</td>";
-                      echo "<td><a href=''><i class=\"fa fa-check\"></i></a>";
+                      echo "<td><a onClick=\"finishOrder($result[id_detail_pesanan])\" style=\"cursor: pointer;\"><i class=\"fa fa-check\"></i></a>";
                       echo "&nbsp;&nbsp;&nbsp;";
                       echo "</tr>";
                     }
@@ -120,7 +120,35 @@
     <script src="../assets/js/essential-plugins.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/plugins/pace.min.js"></script>
+    <script src="../assets/js/plugins/sweetalert.min.js"></script>
     <script src="../assets/js/main.js"></script>
+    <script>
+      function finishOrder(id) {
+        this.id = id;
+        var self = this;
+        $(document).ready(function () {
+                $.ajax({
+                  url: 'proses/pesanan_edit_proses.php',
+                  data: {
+                    'id': self.id
+                  },
+                  dataType: "html",
+                  type: 'POST',
+                  cache: false,
+                  success: function (data) {
+                    if (data == 'error') {
+                      swal("400 Bad Request", "Data Tidak Dapat Diedit", "error");
+                    } else {
+                      document.getElementById(self.id).remove();
+                    }
+                  },
+                  error: function (data) {
+                    swal("400 Bad Request", "Data Tidak Dapat Diedit", "error");
+                  }
+                });
+        });
+      }
+    </script>
   </body>
 
   </html>

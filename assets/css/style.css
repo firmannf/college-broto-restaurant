@@ -346,7 +346,7 @@ a {
 
 a:hover,
 a:focus {
-    color: #46287d;
+    color: #BC212D;
     outline: none !important;
     transition: all 0.3s ease;
     text-decoration: none
@@ -620,7 +620,7 @@ mark,
 
 a.text-primary:hover,
 a.text-primary:focus {
-    color: #512e90
+    color: #BC212D
 }
 
 .text-success {
@@ -669,7 +669,7 @@ a.text-danger:focus {
 
 a.bg-primary:hover,
 a.bg-primary:focus {
-    background-color: #512e90
+    background-color: #BC212D
 }
 
 .bg-success {
@@ -3125,7 +3125,7 @@ fieldset[disabled] .btn-link {
 
 .btn-link:hover,
 .btn-link:focus {
-    color: #46287d;
+    color: #BC212D;
     text-decoration: none;
     background-color: transparent
 }
@@ -4215,7 +4215,7 @@ tbody.collapse.in {
     padding: 10px 15px;
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+    /*box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);*/
     margin-top: 5px;
     margin-bottom: 5px
 }
@@ -4382,14 +4382,14 @@ tbody.collapse.in {
 .navbar-default .navbar-nav>li>a:hover,
 .navbar-default .navbar-nav>li>a:focus {
     color: #eee;
-    background-color: #59329e
+    background-color: #BC212D
 }
 
 .navbar-default .navbar-nav>.active>a,
 .navbar-default .navbar-nav>.active>a:hover,
 .navbar-default .navbar-nav>.active>a:focus {
     color: #fff;
-    background-color: #59329e
+    background-color: #BC212D
 }
 
 .navbar-default .navbar-nav>.disabled>a,
@@ -4656,7 +4656,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination>li>span:hover,
 .pagination>li>span:focus {
     z-index: 2;
-    color: #46287d;
+    color: #BC212D;
     background-color: #eee;
     border-color: #ddd
 }
@@ -4823,7 +4823,7 @@ a.label:focus {
 
 .label-primary[href]:hover,
 .label-primary[href]:focus {
-    background-color: #512e90
+    background-color: #BC212D
 }
 
 .label-success {
@@ -14034,7 +14034,7 @@ body.stop-scrolling {
 }
 
 .sweet-alert button:active {
-    background-color: #512e90
+    background-color: #BC212D
 }
 
 .sweet-alert button.cancel {
@@ -16435,12 +16435,12 @@ a.fc-more:hover {
 
 ::-moz-selection {
     color: #fff;
-    background-color: #512e90
+    background-color: #BC212D
 }
 
 ::selection {
     color: #fff;
-    background-color: #512e90
+    background-color: #BC212D
 }
 
 .main-header .navbar {
@@ -16847,6 +16847,21 @@ a.fc-more:hover {
     padding: 0 15px;
     float: left;
     overflow: hidden
+}
+
+.logo-center {
+    color: #fff;
+    margin: 0 auto;
+    font-family: 'Niconne';
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 50px;
+    text-align: center;
+    padding: 0 15px;
+
+    position: absolute;
+    width: 100%;
+    left: 0;
 }
 
 .main-header .navbar-brand {
