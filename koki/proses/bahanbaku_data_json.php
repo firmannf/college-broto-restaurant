@@ -1,7 +1,7 @@
 <?php
 	require "../../proses/connection.php";
 			
-	$strQuery = "SELECT id_bahanbaku, nama_bahanbaku FROM bahanbaku ORDER BY nama_bahanbaku ASC";
+	$strQuery = "SELECT id_bahanbaku, nama_bahanbaku,satuan FROM bahanbaku ORDER BY nama_bahanbaku ASC";
 	$query = mysqli_query($connection, $strQuery);
     $data = array();
     foreach ($query as $row) {

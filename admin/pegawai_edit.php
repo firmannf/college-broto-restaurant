@@ -22,7 +22,7 @@
             $nama_pegawai = $result['nama_pegawai'];
             $pekerjaan = $result['pekerjaan'];
         }
-    }
+  }
 ?>
   <!DOCTYPE html>
   <html>

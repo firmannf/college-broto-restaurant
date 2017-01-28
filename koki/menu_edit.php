@@ -9,6 +9,26 @@
 	} else {
     echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
   }
+
+  if(isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $nama = "";
+        $foto = "";
+        $kategori = "";
+        $estimasi = "";
+        $harga = "";
+        $strQuery = "SELECT id_menu, nama_menu, foto, kategori, estimasi_penyajian, harga FROM menu WHERE id_menu = '$id'";
+        $query = mysqli_query($connection, $strQuery);
+        if($query){
+            $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+            $id = $result['id_menu'];
+            $nama = $result['nama_menu'];
+            $foto = $result['foto'];
+            $kategori = $result['kategori'];
+            $estimasi = $result['estimasi_penyajian'];
+            $harga = $result['harga'];
+        }
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,64 +84,72 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
           <div class="card">
-            <h3 class="card-title">Tambah Data Menu</h3>
+            <h3 class="card-title">Edit Data Menu</h3>
             <div class="card-body">
-              <form id="form-menu" method="post" action="proses/menu_tambah_proses.php" enctype="multipart/form-data">
+              <form id="form-menu" method="post" action="proses/menu_edit_proses.php" enctype="multipart/form-data">
                 <div class="form-group">
-                  <label class="control-label">Foto</label>
-                  <input type="file" class="form-control" name="foto" required>
+                  <label class="control-label">Foto (<?php echo $foto;?>)</label>
+                  <input type="file" class="form-control" name="foto">
                 </div>
                 <div class="form-group">
                   <label class="control-label">Nama Menu</label>
-                  <input type="text" name="nama" placeholder="Masukkan nama menu" class="form-control" required>
+                  <input type="text" name="nama" placeholder="Masukkan nama menu" class="form-control" value="<?php echo $nama;?>" required>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Kategori</label>
                   <select class="form-control" name="kategori">
-                    <option value="Makanan">Makanan</option>
-                    <option value="Minuman">Minuman</option>
+                    <option value="Makanan" <?php if ($kategori == "Makanan") echo "selected";?>>Makanan</option>
+                    <option value="Minuman" <?php if ($kategori == "Minuman") echo "selected";?>>Minuman</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Estimasi Penyajian (menit)</label>
-                  <input type="number" name="estimasi" placeholder="Masukkan estimasi penyajian" class="form-control" required>
+                  <input type="number" name="estimasi" placeholder="Masukkan estimasi penyajian" class="form-control" value="<?php echo $estimasi;?>"
+                    required>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Usulan Harga</label>
-                  <input type="number" name="harga" placeholder="Masukkan harga" class="form-control" required>
+                  <input type="number" name="harga" placeholder="Masukkan harga" class="form-control" value="<?php echo $harga;?>" required>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Bahan Baku &nbsp;&nbsp;&nbsp;<a onClick="addField()" style="cursor: pointer;"><i class="fa fa-plus-square"></i></a>&nbsp;&nbsp;&nbsp;<a onClick="deleteField()" style="cursor: pointer;"><i class="fa fa-minus-square"></i></a></label>
                   <div class="table-responsive">
-                    <table class="table table-hover table-bordered" id="table-ingredients">
+                    <table class="table table-hover table-bordered">
                       <thead>
                         <tr>
                           <th>Bahan</th>
                           <th>Jumlah</th>
+                          <th>Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>
-                            <select class="form-control input-sm" name="id_bahanbaku">
-                              <?php
-                              $strQuery = "SELECT id_bahanbaku, nama_bahanbaku, satuan FROM bahanbaku ORDER BY nama_bahanbaku ASC";
-                              $query = mysqli_query($connection, $strQuery);
-                              while($result = mysqli_fetch_assoc($query)){
-                                echo "<option value=$result[id_bahanbaku]>$result[nama_bahanbaku] ($result[satuan])</option>";
+                        <?php
+                              $strQuery = "SELECT md.id_detail_menu, bb.nama_bahanbaku, bb.satuan, md.qty, m.id_menu 
+                                          FROM menu_detail md INNER JOIN menu m ON md.id_menu = m.id_menu
+                                          INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku 
+                                          WHERE md.id_menu = $result[id_menu]";
+                              $subQuery = mysqli_query($connection, $strQuery);
+                              $i = 0;
+                              while($subResult = mysqli_fetch_assoc($subQuery)){
+                                echo "<tr id=$subResult[id_detail_menu]>";
+                                echo "<td>$subResult[nama_bahanbaku]</td>";
+                                echo "<td>$subResult[qty] $subResult[satuan]</td>";
+                                echo "<td><a href=# class=btn-link onClick=deleteConfirm($subResult[id_detail_menu])>
+                                    <i class=\"fa fa-trash\"></i>
+                                </a></td>";
+                                echo "</tr>";
                               }
-                              ?>
-                            </select>
-                          </td>
-                          <td>
-                            <input type="number" step="any" name="qty" placeholder="Masukkan jumlah" class="form-control input-sm" required>
-                          </td>
-                        </tr>
+                          ?>
                       </tbody>
                     </table>
+                    <div class="table-responsive">
+                      <table class="table table-hover table-bordered" id="table-ingredients">
+                      </table>
+                    </div>
                   </div>
                 </div>
                 <div class="card-footer" style="text-align: center;">
+                  <input type="hidden" name="id" value="<?php echo $id;?>"/>
                   <button type="submit" class="btn btn-primary icon-btn input-lg"><i class="fa fa-fw fa-lg fa-check-circle"></i>Simpan</button>
                 </div>
               </form>
@@ -214,19 +242,58 @@
 
     function deleteField() {
       var myTable = document.getElementById("table-ingredients");
-      if(myTable.rows.length > 2)
-        myTable.deleteRow(myTable.rows.length - 1);
+      myTable.deleteRow(myTable.rows.length - 1);
     }
 
-    $("#form-menu").submit(function(event) {
-        var rawData = $('#table-ingredients').serializeFormJSON();
-        var input = $("<input>")
-               .attr("type", "hidden")
-               .attr("name", "bahanbaku").val(JSON.stringify(rawData));
-        $('#form-menu').append($(input));
+    $("#form-menu").submit(function (event) {
+      var rawData = $('#table-ingredients').serializeFormJSON();
+      var input = $("<input>")
+        .attr("type", "hidden")
+        .attr("name", "bahanbaku").val(JSON.stringify(rawData));
+      $('#form-menu').append($(input));
     });
-  </script>
 
+    function deleteConfirm(id) {
+        this.id = id;
+        var self = this;
+        $(document).ready(function () {
+          swal({
+              title: "Apakah Anda Yakin ?",
+              type: "warning",
+              inputType: "hidden",
+              showCancelButton: true,
+              confirmButtonText: "Ya",
+              cancelButtonText: "Tidak",
+              showLoaderOnConfirm: true,
+              closeOnConfirm: false
+            },
+            function (isConfirm) {
+              if (isConfirm) {
+                $.ajax({
+                  url: 'proses/menudetail_delete_proses.php',
+                  data: {
+                    'id': self.id
+                  },
+                  dataType: "html",
+                  type: 'POST',
+                  cache: false,
+                  success: function (data) {
+                    if (data == 'error') {
+                      swal("400 Bad Request", "Data Tidak Dapat dihapus", "error");
+                    } else {
+                      document.getElementById(self.id).remove();
+                      swal("Berhasil", "Data Terhapus", "success");
+                    }
+                  },
+                  error: function (data) {
+                    swal("400 Bad Request", "Data Tidak Dapat dihapus", "error");
+                  }
+                });
+              }
+            });
+        });
+      }
+  </script>
   <!--Handling Error and Success Message-->
   <?php
     if(isset($_GET['e'])) {

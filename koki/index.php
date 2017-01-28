@@ -94,7 +94,7 @@
                               SELECT m.id_menu
                               FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
                               INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
-                              WHERE bb.tgl_kadaluarsa < NOW()
+                              WHERE bb.tgl_kadaluarsa < NOW() OR bb.stok <= 0
                             )";
                     $query = mysqli_query($connection, $strQuery);
                     echo mysqli_num_rows($query); 
@@ -139,7 +139,7 @@
                               SELECT m.id_menu
                               FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
                               INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
-                              WHERE bb.tgl_kadaluarsa < NOW()
+                              WHERE bb.tgl_kadaluarsa < NOW() OR bb.stok <= 0
                             )";
                       $query = mysqli_query($connection, $strQuery);
                       $i = 0;

@@ -56,26 +56,26 @@
       <div class="content-wrapper">
         <div class="page-title">
           <div>
-            <h1><i class="fa fa-glass"></i> Atur Menu</h1>
+            <h1><i class="fa fa-cutlery"></i> Atur Menu</h1>
             <p>Olah data menu di resto broto</p>
           </div>
-          <div class="col-md-4">
-            <a href="#" onClick="searchKeywords()" class="btn btn-default pull-right" style="margin-left: 12px;"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Cari</a>
+          <div>
             <?php
             if(isset($_GET['q'])) {
             ?>
-              <a href="menu_list.php" class="btn btn-primary pull-right"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Kembali</a>
+              <a href="menu_list.php" class="btn btn-success btn-flat"><i class="fa fa-arrow-left"></i></a>
               <?php
             }
             ?>
+            <a href="#" onClick="searchKeywords()" class="btn btn-default btn-flat"><i class="fa fa-search"></i></a>
           </div>
         </div>
         <div class="row">
           <?php
         if(isset($_GET['q'])){
-          $strQuery = "SELECT id_menu, nama_menu, foto, kategori, estimasi_penyajian FROM menu WHERE nama_menu LIKE '%$_GET[q]%' ORDER BY id_menu DESC";
+          $strQuery = "SELECT id_menu, nama_menu, foto, kategori, estimasi_penyajian, harga FROM menu WHERE nama_menu LIKE '%$_GET[q]%' ORDER BY id_menu DESC";
         }else {
-          $strQuery = "SELECT id_menu, nama_menu, foto, kategori, estimasi_penyajian FROM menu ORDER BY id_menu DESC";
+          $strQuery = "SELECT id_menu, nama_menu, foto, kategori, estimasi_penyajian, harga FROM menu ORDER BY id_menu DESC";
         }
         $query = mysqli_query($connection, $strQuery);
         $i = 0;
@@ -88,7 +88,7 @@
                     <img class="img-circle" src="../uploads/menu/<?php echo $result['foto'];?>" style="width: 120px; height: 120px;" />
                   </div>
                   <div class="col-md-8">
-                    <h3><b><?php echo $result['nama_menu'];?></b></h3>
+                    <h3 data-toggle="modal" data-target="#detail<?php echo $i;?>" style="cursor: pointer;"><b><?php echo $result['nama_menu'];?></b></h3>
                     <h5>
                       <?php echo $result['kategori'];?>
                     </h5>
@@ -96,13 +96,72 @@
                       <?php echo $result['estimasi_penyajian'];?> Menit Penyajian</h5>
                   </div>
                   <div class="col-md-12" style="text-align: right;">
-                    <a class="btn btn-primary" href="#" onClick="deleteConfirm(<?php echo $result['id_menu'];?>)">Hapus</a>                    &nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-warning">Edit</a>
+                    <a class="btn btn-primary btn-flat" href="#" onClick="deleteConfirm(<?php echo $result['id_menu'];?>)"><i class="fa fa-trash"></i></a>                    &nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-warning btn-flat" href="menu_edit.php?id=<?php echo $result['id_menu'];?>"><i class="fa fa-pencil"></i></a>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="modal fade" id="detail<?php echo $i;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <form action="proses/pembayaran_edit_proses.php" method="POST">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="myModalLabel"><?php echo $result['nama_menu'];?></h4>
+                    </div>
+                    <div class="modal-body">
+                      <center><img class="img-responsive img-circle" src="../uploads/menu/<?php echo $result['foto'];?>" style="width: 200px; height: 200px;"/></center>
+                      <br/><br/>
+                      <h4><b>Nama Menu</b></h4>
+                      <h5><?php echo $result['nama_menu'];?></h5>
+                      <br/>
+                      <h4><b>Kategori</b></h4>
+                      <h5><?php echo $result['kategori'];?></h5>
+                      <br/>
+                      <h4><b>Estimasi Penyajian</b></h4>
+                      <h5><?php echo $result['estimasi_penyajian'];?> Menit</h5>
+                      <br/>
+                      <h4><b>Harga</b></h4>
+                      <h5>Rp.<?php echo $result['harga'];?></h5>
+                      <br/>
+                      <h4><b>Bahan Baku</b></h4>
+                      <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                          <thead>
+                            <tr>
+                              <td>Nama Bahan Baku</td>
+                              <td>Jumlah</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php
+                            $strQuery = "SELECT bb.nama_bahanbaku, bb.satuan, md.qty, m.id_menu 
+                                          FROM menu_detail md INNER JOIN menu m ON md.id_menu = m.id_menu
+                                          INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku 
+                                          WHERE md.id_menu = $result[id_menu]";
+                            $subQuery = mysqli_query($connection, $strQuery);
+                            $i = 0;
+                            while($subResult = mysqli_fetch_assoc($subQuery)){
+                              echo "<tr>";
+                              echo "<td>$subResult[nama_bahanbaku]</td>";
+                              echo "<td>$subResult[qty] $subResult[satuan]</td>";
+                              echo "</tr>";
+                            }
+                          ?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Close</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
             <?php
+            $i++;
         }
         ?>
         </div>
@@ -188,7 +247,7 @@
           </script>";
       } else if($_GET['m'] === 'success-edit-data') {
           echo "<script type=text/javascript>
-                swal('Berhasil', 'Data Berhasil diedit', 'success');
+                swal('Berhasil', 'Data Berhasil Diedit', 'success');
           </script>";
       }
     }
