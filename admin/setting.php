@@ -41,7 +41,7 @@
       <aside class="main-sidebar hidden-print">
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
-            <li class="active"><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+            <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
             <li class="treeview"><a href="#"><i class="fa fa-user"></i><span>Atur Pegawai</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="pegawai_list.php"><i class="fa fa-th-large"></i> Daftar Pegawai</a></li>

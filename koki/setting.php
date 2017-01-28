@@ -2,7 +2,7 @@
   session_start();
   
   if(isset($_SESSION['pekerjaan'])){
-    if($_SESSION['pekerjaan'] != 'Kasir') {
+    if($_SESSION['pekerjaan'] != 'Koki') {
       echo "<script type=text/javascript>document.location.href='../index.php?e=unauthorized'</script>";
     }
 	} else {
@@ -41,7 +41,14 @@
       <aside class="main-sidebar hidden-print">
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
-            <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Validasi Pembayaran</span></a></li>
+            <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+            <li><a href="pesanan_list.php"><i class="fa fa-list-alt"></i><span>Daftar Pesanan</span></a></li>
+            <li class="treeview"><a href="#"><i class="fa fa-cutlery"></i><span>Atur Menu</span><i class="fa fa-angle-right"></i></a>
+              <ul class="treeview-menu">
+                <li><a href="menu_list.php"><i class="fa fa-th-large"></i> Daftar Menu</a></li>
+                <li><a href="menu_tambah.php"><i class="fa fa-plus"></i> Tambah Menu</a></li>
+              </ul>
+            </li>
           </ul>
         </section>
       </aside>

@@ -41,7 +41,7 @@
       <aside class="main-sidebar hidden-print">
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
-            <li class="active"><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+            <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
             <li><a href="pelanggan_review.php"><i class="fa fa-star"></i><span>Review Pelanggan</span></a></li>
           </ul>
         </section>

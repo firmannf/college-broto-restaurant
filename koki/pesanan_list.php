@@ -29,10 +29,10 @@
           <div class="navbar-custom-menu">
             <ul class="top-nav">
               <li class="dropdown">
-                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Admin</b></a>
+                <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama_pegawai'];?></b></a>
                 <ul class="dropdown-menu settings-menu">
-                  <li><a href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-                  <li><a href="#"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+                  <li><a href="setting.php"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+                  <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
                 </ul>
               </li>
             </ul>
@@ -44,7 +44,7 @@
           <ul class="sidebar-menu" style="padding-top: 24px;">
             <li><a href="index.php"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
             <li class="active"><a href="pesanan_list.php"><i class="fa fa-list-alt"></i><span>Daftar Pesanan</span></a></li>
-            <li class="treeview"><a href="#"><i class="fa fa-user"></i><span>Atur Menu</span><i class="fa fa-angle-right"></i></a>
+            <li class="treeview"><a href="#"><i class="fa fa-cutlery"></i><span>Atur Menu</span><i class="fa fa-angle-right"></i></a>
               <ul class="treeview-menu">
                 <li><a href="menu_list.php"><i class="fa fa-th-large"></i> Daftar Menu</a></li>
                 <li><a href="menu_tambah.php"><i class="fa fa-plus"></i> Tambah Menu</a></li>
@@ -82,7 +82,7 @@
                     $strQuery = "SELECT pd.id_detail_pesanan, p.id_pesanan, me.nama_meja, m.nama_menu, pd.qty 
                                   FROM pesanan p INNER JOIN pesanan_detail pd ON p.id_pesanan = pd.id_pesanan 
                                   INNER JOIN meja me ON p.id_meja = me.id_meja
-                                  INNER JOIN menu m ON pd.id_menu = m.id_menu";
+                                  INNER JOIN menu m ON pd.id_menu = m.id_menu ORDER BY p.tgl_order ASC";
                     $query = mysqli_query($connection, $strQuery);
                     $i = 0;
                     while($result = mysqli_fetch_assoc($query)){

@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS pesanan_detail(
     id_pesanan INT(11) NOT NULL,
     id_menu INT(11) NOT NULL,
     qty TINYINT NOT NULL,
-    status ENUM('Sudah', 'Belum') DEFAULT 'Belum' NOT NULL
+    status ENUM('Sudah', 'Belum') DEFAULT 'Belum' NOT NULL,
     
     CONSTRAINT fk_detail_pesanan FOREIGN KEY(id_pesanan) REFERENCES pesanan(id_pesanan) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_detail_pesanan_menu FOREIGN KEY(id_menu) REFERENCES menu(id_menu) ON UPDATE CASCADE

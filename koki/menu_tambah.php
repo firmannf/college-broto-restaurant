@@ -29,10 +29,10 @@
         <div class="navbar-custom-menu">
           <ul class="top-nav">
             <li class="dropdown">
-              <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Koki</b></a>
+              <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-user fa-lg" style="margin-right: 16px;"></i><b>Hello, <?php echo $_SESSION['nama_pegawai'];?></b></a>
               <ul class="dropdown-menu settings-menu">
-                <li><a href="#"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-                <li><a href="#"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+                <li><a href="setting.php"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+                <li><a href="../proses/logout.php"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
               </ul>
             </li>
           </ul>
@@ -66,10 +66,10 @@
           <div class="card">
             <h3 class="card-title">Tambah Data Menu</h3>
             <div class="card-body">
-              <form>
+              <form method="post" action="proses/menu_tambah_proses.php">
                 <div class="form-group">
                   <label class="control-label">Gambar</label>
-                  <input type="file" class="form-control" required>
+                  <input type="file" class="form-control" name="foto" required>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Nama Menu</label>
@@ -91,14 +91,13 @@
                   <input type="number" placeholder="Masukkan harga" class="form-control" required>
                 </div>
                 <div class="form-group">
-                  <label class="control-label">Bahan Baku</label>
+                  <label class="control-label">Bahan Baku &nbsp;&nbsp;&nbsp;<a onClick="addField()" style="cursor: pointer;"><i class="fa fa-plus-square"></i></a>&nbsp;&nbsp;&nbsp;<a onClick="deleteField()" style="cursor: pointer;"><i class="fa fa-minus-square"></i></a></label>
                   <div class="table-responsive">
                     <table class="table table-hover table-bordered" id="table-ingredients">
                       <thead>
                         <tr>
                           <th>Bahan</th>
                           <th>Jumlah</th>
-                          <th>Aksi &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onClick="addField()" style="pointer: cursor;"><i class="fa fa-plus"></i></a></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -116,8 +115,6 @@
                           </td>
                           <td>
                             <input type="number" placeholder="Masukkan jumlah" class="form-control input-sm">
-                          </td>
-                          <td>
                           </td>
                         </tr>
                       </tbody>
@@ -153,7 +150,7 @@
           tempData = JSON.parse(data);
           var currentIndex = myTable.rows.length;
           var currentRow = myTable.insertRow(-1);
-console.log(currentIndex);
+
           var bahanbakuBox = document.createElement("select");
           bahanbakuBox.setAttribute("name", "id_bahanbaku");
           bahanbakuBox.setAttribute("class", "form-control input-sm");
@@ -171,28 +168,21 @@ console.log(currentIndex);
           jumlahBox.setAttribute("class", "form-control input-sm");
           jumlahBox.setAttribute("placeholder", "Masukkan jumlah");
 
-          var closeBox = document.createElement("a");
-          closeBox.setAttribute("href", "javascript:deleteBaris(" + currentIndex + ");");
-          var iconBox = document.createElement("i");
-          iconBox.setAttribute("class", "fa fa-close");
-          closeBox.appendChild(iconBox);
-
           currentCell = currentRow.insertCell(-1);
           currentCell.appendChild(bahanbakuBox);
 
           currentCell = currentRow.insertCell(-1);
           currentCell.appendChild(jumlahBox);
-
-          var currentCell = currentRow.insertCell(-1);
-          currentCell.appendChild(closeBox);
         }
       });
     }
 
-    function deleteBaris(position) {
-      document.getElementById("table-ingredients").deleteRow(position);
+    function deleteField() {
+      var myTable = document.getElementById("table-ingredients");
+      if(myTable.rows.length > 2)
+        myTable.deleteRow(myTable.rows.length - 1);
     }
-    </script>
+  </script>
 </body>
 
 </html>

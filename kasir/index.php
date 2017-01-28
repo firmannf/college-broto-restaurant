@@ -42,14 +42,14 @@
       <aside class="main-sidebar hidden-print">
         <section class="sidebar">
           <ul class="sidebar-menu" style="padding-top: 24px;">
-            <li class="active"><a href="index.php"><i class="fa fa-dashboard"></i><span>Validasi Pembayaran</span></a></li>
+            <li class="active"><a href="index.php"><i class="fa fa-money"></i><span>Validasi Pembayaran</span></a></li>
           </ul>
         </section>
       </aside>
       <div class="content-wrapper">
         <div class="page-title">
           <div>
-            <h1><i class="fa fa-dashboard"></i> Validasi Pembayaran</h1>
+            <h1><i class="fa fa-money"></i> Validasi Pembayaran</h1>
             <p>Selamat datang di halaman validasi pembayaran kasir resto broto</p>
           </div>
           <div>

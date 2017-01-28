@@ -50,7 +50,7 @@
     <div class="content-wrapper">
       <div class="page-title">
         <div>
-          <h1><i class="fa fa-user"></i> Review Pelanggan</h1>
+          <h1><i class="fa fa-star"></i> Review Pelanggan</h1>
           <p>Review pelanggan yang pernah berkunjung ke resto broto</p>
         </div>
         <div>
