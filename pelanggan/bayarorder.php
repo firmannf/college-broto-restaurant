@@ -58,9 +58,22 @@
     </div>
     <div class="row">
       <div class="col-md-12 col-xs-12 col-lg-12 center-block">
-       <button id="buttonBayar" name="buttonBayar" class="btn btn-success center-block" style="margin-top: 40px;">
+       <button id="buttonBayar" name="buttonBayar" class="btn btn-success center-block" onClick="bayarOrder()" style="margin-top: 40px;">
            <h3> Bayar Order </h3>
        </button>
+       <script>
+       function bayarOrder(){
+         swal({
+           title: "Mohon Tunggu",
+           text: "Pelayanan kami akan datang untuk melakukan konfirmasi pembayaran, Terimakasih sudah mengunjungi Resto Broto. semoga anda puas dan dapat kembali Lagi kesini, tekan OK untuk Melanjutkan",
+           type: "success",
+           showCancelButton: false,
+           confirmButtonColor: "#DD6B55",
+           confirmButtonText: "OK",
+           closeOnConfirm: false
+         });
+       }
+       </script>
    </div>
     </div>
   </div>
@@ -72,6 +85,7 @@
   <script src="../assets/js/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/pace.min.js"></script>
   <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/plugins/sweetalert.min.js"></script>
 </body>
 
 </html>
