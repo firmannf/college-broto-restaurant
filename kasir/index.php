@@ -263,6 +263,7 @@
       $.ajax({
         type: 'POST',
         url: 'proses/pesanan_list_proses.php',
+        cache: false,
         success: function (response) {
           $('#content').html(response);
         },

@@ -97,6 +97,7 @@
       $.ajax({
         type: 'POST',
         url: 'proses/meja_list_proses.php',
+        cache: false,
         success: function (response) {
           $('#body').html(response);
         },
@@ -123,6 +124,7 @@
           },
           dataType: "html",
           type: 'POST',
+          cache: false,
           success: function (response) {
             console.log(response)
           }

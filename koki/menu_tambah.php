@@ -143,6 +143,7 @@
       $.ajax({
         url: "proses/bahanbaku_data_json.php",
         method: "GET",
+        cache: false,
         success: function (data) {
           var myTable = document.getElementById("table-ingredients");
           var id = [];

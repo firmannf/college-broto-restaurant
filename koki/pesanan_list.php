@@ -133,6 +133,7 @@
         $.ajax({
           type: 'GET',
           url: 'proses/pesanan_list_proses.php',
+          cache: false,
           success: function (response) {
             $('#table-content').html(response);
           },

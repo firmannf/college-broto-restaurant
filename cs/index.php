@@ -52,9 +52,9 @@
           <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
           <p>Selamat datang di halaman customer service resto broto</p>
         </div>
-        <div>
+        <div class="col-md-2" style="text-align: right;">
           <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle btn btn-default btn-flat"><i class="fa fa-print"></i></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu setting-menu">
             <li><a href="#" target="_blank" id="cetakpelayanan" onClick="print(1)">Pelayanan</a></li>
             <li><a href="#" target="_blank" id="cetakharga" onClick="print(2)">Harga</a></li>
             <li><a href="#" target="_blank" id="cetakmakanan" onClick="print(3)">Makanan</a></li>
@@ -136,6 +136,7 @@
       $.ajax({
         url: "proses/pelayanan_data_json.php",
         method: "GET",
+        cache: false,
         success: function (data) {
           var bulan = [];
           var pelayanan = [];
@@ -170,6 +171,7 @@
       $.ajax({
         url: "proses/harga_data_json.php",
         method: "GET",
+        cache: false,
         success: function (data) {
           var bulan = [];
           var harga = [];
@@ -204,6 +206,7 @@
       $.ajax({
         url: "proses/makanan_data_json.php",
         method: "GET",
+        cache: false,
         success: function (data) {
           var bulan = [];
           var makanan = [];
@@ -238,6 +241,7 @@
       $.ajax({
         url: "proses/minuman_data_json.php",
         method: "GET",
+        cache: false,
         success: function (data) {
           var bulan = [];
           var minuman = [];

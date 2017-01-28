@@ -164,6 +164,7 @@
                   data: {
                     'id': self.id
                   },
+                  cache: false,
                   dataType: "html",
                   type: 'POST',
                   cache: false,

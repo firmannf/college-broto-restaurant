@@ -40,7 +40,7 @@
       <h2 align="center" style="margin-bottom:15px;"> Pilih Makanan Terbaik </h2>
       <h5 align="center" style="margin-bottom:30px;"> Dari lidah turun ke hati, makanan yang bikin jatuh cinta lagi</h5>
       <?php
-        $strQuery = "SELECT m.id_menu, m.nama_menu, m.foto, bb.stok, m.harga
+        $strQuery = "SELECT m.id_menu, m.nama_menu, m.foto, bb.stok, m.harga, m.status
                                     FROM menu m INNER JOIN menu_detail md ON m.id_menu = md.id_menu
                                     INNER JOIN bahanbaku bb ON md.id_bahanbaku = bb.id_bahanbaku
                                     WHERE m.kategori = 'Makanan'
@@ -62,7 +62,8 @@
                                           WHERE (bb.stok - md.qty) < 0
                                         )
                                       )
-                                    );";
+                                    )
+                                    AND m.status = 'Ya';";
         $query = mysqli_query($connection, $strQuery);
         $i = 0;
         while($result = mysqli_fetch_assoc($query)){
@@ -128,6 +129,7 @@
                       swal("400 Bad Request", "Menu Tidak Dapat Ditambahkan", "error");
                     } else {
                       swal("Sukses", "Menu Ditambahkan", "success");
+                      console.log(data);
                     }
                   },
                   error: function (data) {
