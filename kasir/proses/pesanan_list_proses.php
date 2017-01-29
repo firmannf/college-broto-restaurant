@@ -101,7 +101,6 @@
                             INNER JOIN menu m on pd.id_menu = m.id_menu 
                             WHERE p.id_pesanan = '$result[id_pesanan]' ORDER BY m.id_menu ASC";
                             $subquery = mysqli_query($connection, $strQuery);
-                            $i = 0;
                             $total = 0;
                             while($subRresult = mysqli_fetch_assoc($subquery)){
                               echo "<tr>";

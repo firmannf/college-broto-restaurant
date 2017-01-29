@@ -165,7 +165,6 @@
                             INNER JOIN menu m on pd.id_menu = m.id_menu 
                             WHERE p.id_pesanan = '$result[id_pesanan]' ORDER BY m.id_menu ASC";
                             $subquery = mysqli_query($connection, $strQuery);
-                            $i = 0;
                             $total = 0;
                             while($subRresult = mysqli_fetch_assoc($subquery)){
                               echo "<tr>";
@@ -255,9 +254,15 @@
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/plugins/sweetalert.min.js"></script>
     <script>
-    $(document).ready(function () {
-      refresh();
-    });
+    <?php
+      if(!isset($_GET['q'])){
+    ?>
+      $(document).ready(function () {
+        refresh();
+      });
+    <?php
+      }
+    ?>
 
     function refresh() {
       $.ajax({
