@@ -9,7 +9,7 @@
 	$bahanbaku = json_decode($_POST['bahanbaku'], true);
 
 	if($_FILES['foto']['size'] == 0) {
-		$strQuery = "UPDATE menu SET nama_menu = '$nama_menu', kategori = '$kategori', estimasi_penyajian = '$estimasi', harga = '$harga'
+		$strQuery = "UPDATE menu SET nama_menu = '$nama_menu', kategori = '$kategori', estimasi_penyajian = '$estimasi', harga = '$harga', status = 'Tidak'
 						WHERE id_menu = '$id_menu'";
 		$query = mysqli_query($connection, $strQuery);
 		if(!$query){
@@ -31,7 +31,7 @@
 		$foto = strtolower($foto . date('YmdHis') . "." . end($temp));
 		$target_file = $target_dir . basename($foto);
 		if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {
-			$strQuery = "UPDATE menu SET nama_menu = '$nama_menu', foto = '$foto', kategori = '$kategori', estimasi_penyajian = '$estimasi', harga = '$harga'
+			$strQuery = "UPDATE menu SET nama_menu = '$nama_menu', foto = '$foto', kategori = '$kategori', estimasi_penyajian = '$estimasi', harga = '$harga', status = 'Tidak'
 							WHERE id_menu = '$id_menu'";$query = mysqli_query($connection, $strQuery);
 			if(!$query){
 				echo "<script type=text/javascript>document.location.href='../menu_edit.php?e=bad-request'</script>";
